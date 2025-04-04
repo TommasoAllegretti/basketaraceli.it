@@ -20,3 +20,19 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('pages/home');
 });
+
+Route::get('/eventi', function () {
+    return view('pages/eventi');
+});
+
+Route::get('/squadre', function () {
+    return view('pages/squadre');
+});
+
+Route::get('/organizzazione', function () {
+    return view('pages/organizzazione');
+});
+
+Route::get('/contatti', function () {
+    return view('pages/contatti');
+});
