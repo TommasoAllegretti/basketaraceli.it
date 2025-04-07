@@ -14,6 +14,7 @@ class Player extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'team_id',
         'name',
         'position',
         'height_cm',
@@ -24,4 +25,9 @@ class Player extends Model
         'rebounds_per_game',
         'assists_per_game',
     ];
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 space-y-6">
 
                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    href="{{ route('player.create') }}">
+                    href="{{ route('players.create') }}">
                     {{ __('Crea nuovo giocatore') }}
                 </a>
 
@@ -31,6 +31,9 @@
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Nome
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Squadra
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Posizione
@@ -66,6 +69,9 @@
                                             {{ $player->name }}
                                         </td>
                                         <td class="px-6 py-4">
+                                            {{ $player->team->name }}
+                                        </td>
+                                        <td class="px-6 py-4">
                                             {{ $player->position ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
@@ -81,18 +87,18 @@
                                             {{ $player->assists_per_game ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('player.destroy', $player->id) }}" method="POST"
+                                            <form action="{{ route('players.destroy', $player->id) }}" method="POST"
                                                 class="space-x-2">
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('player.show', $player->id) }}">Show</a>
+                                                    href="{{ route('players.show', $player->id) }}">Show</a>
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('player.edit', $player->id) }}">Edit</a>
+                                                    href="{{ route('players.edit', $player->id) }}">Edit</a>
 
 
 

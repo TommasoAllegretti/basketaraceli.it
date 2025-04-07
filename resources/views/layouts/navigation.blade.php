@@ -16,8 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (Auth::user()->admin == 1)
-                        <x-nav-link :href="route('player.index')" :active="request()->routeIs('player.index')">
+                        <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                             {{ __('Giocatori') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.index')">
+                            {{ __('Squadre') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -75,9 +78,15 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('player.index')" :active="request()->routeIs('player.index')">
+            
+            @if (Auth::user()->admin == 1)
+            <x-responsive-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                 {{ __('Giocatori') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.index')">
+                {{ __('Squadre') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

@@ -14,7 +14,7 @@
                         {{ __('Nuovo giocatore') }}
                     </h2>
 
-                    <form method="POST" action="{{ route('player.store') }}" class="my-6 space-y-6">
+                    <form method="POST" action="{{ route('players.store') }}" class="my-6 space-y-6">
                         @csrf
 
                         <div>

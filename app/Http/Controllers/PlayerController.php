@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Player;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
@@ -12,9 +13,9 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Player::latest()->where('deleted_at', NULL)->paginate(10);
+        $players = Player::with('team')->latest()->where('deleted_at', NULL)->paginate(10);
 
-        return view('player.index', compact('players'))
+        return view('players.index', compact('players'))
 
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -24,7 +25,9 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        return view('player.create');
+        $teams = Team::all()->where('deleted_at', NULL);
+
+        return view('players.create', compact('teams'));
     }
 
     /**
@@ -34,8 +37,15 @@ class PlayerController extends Controller
     {
         $request->validate([
 
-            'name' => 'required',
-
+            'team_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'position' => 'nullable|string|max:255',
+            'height_cm' => 'nullable|integer',
+            'birth_date' => 'nullable|date',
+            'jersey_number' => 'nullable|integer',
+            'points_per_game' => 'nullable|numeric',
+            'rebounds_per_game' => 'nullable|numeric',
+            'assists_per_game' => 'nullable|numeric',
         ]);
 
 
@@ -44,7 +54,7 @@ class PlayerController extends Controller
 
 
 
-        return redirect()->route('player.index')
+        return redirect()->route('players.index')
 
             ->with('success', 'Player created successfully.');
     }
@@ -54,7 +64,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        return view('player.show', compact('player'));
+        return view('players.show', compact('player'));
     }
 
     /**
@@ -62,7 +72,7 @@ class PlayerController extends Controller
      */
     public function edit(Player $player)
     {
-        return view('player.edit', compact(var_name: 'player'));
+        return view('players.edit', compact(var_name: 'player'));
     }
 
     /**
@@ -74,13 +84,11 @@ class PlayerController extends Controller
 
             'name' => 'required',
 
-            'detail' => 'required',
-
         ]);
 
         $player->update($request->all());
 
-        return redirect()->route('player.index')
+        return redirect()->route('players.index')
 
             ->with('success', 'Player updated successfully');
     }
@@ -92,7 +100,7 @@ class PlayerController extends Controller
     {
         $player->delete();
 
-        return redirect()->route('player.index')
+        return redirect()->route('players.index')
 
             ->with('success', 'Player deleted successfully');
     }

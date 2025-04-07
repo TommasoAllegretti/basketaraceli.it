@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,7 +44,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('player', PlayerController::class)->middleware(['auth', 'verified', 'admin']);
+Route::resource('teams', TeamController::class)->middleware(['auth', 'verified', 'admin']);
+Route::resource('players', PlayerController::class)->middleware(['auth', 'verified', 'admin']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
