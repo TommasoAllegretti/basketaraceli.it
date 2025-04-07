@@ -14,13 +14,13 @@
                         {{ __('Nuovo giocatore') }}
                     </h2>
 
-                    <form method="POST" action="{{ route('giocatori.store') }}" class="my-6 space-y-6">
+                    <form method="POST" action="{{ route('player.store') }}" class="my-6 space-y-6">
                         @csrf
 
                         <div>
-                            <x-input-label for="player_name" :value="__('Nome')" />
+                            <x-input-label for="player_name" :value="__('Nome (obbligatorio)')" />
                             <x-text-input id="player_name" name="name" type="text" class="mt-1 block w-full"
-                                autocomplete="off" />
+                                autocomplete="off" required />
                         </div>
 
                         <div>
@@ -31,7 +31,7 @@
 
                         <div>
                             <x-input-label for="height_cm" :value="__('Altezza (cm)')" />
-                            <x-text-input id="height_cm" name="height_cm" type="text" class="mt-1 block w-full"
+                            <x-text-input id="height_cm" name="height_cm" type="number" class="mt-1 block w-full"
                                 autocomplete="off" />
                         </div>
 

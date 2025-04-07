@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (Auth::user()->admin == 1)
-                        <x-nav-link :href="route('giocatori.index')" :active="request()->routeIs('giocatori.index')">
+                        <x-nav-link :href="route('player.index')" :active="request()->routeIs('player.index')">
                             {{ __('Giocatori') }}
                         </x-nav-link>
                     @endif
@@ -75,7 +75,7 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('giocatori.index')" :active="request()->routeIs('giocatori.index')">
+            <x-responsive-nav-link :href="route('player.index')" :active="request()->routeIs('player.index')">
                 {{ __('Giocatori') }}
             </x-responsive-nav-link>
         </div>

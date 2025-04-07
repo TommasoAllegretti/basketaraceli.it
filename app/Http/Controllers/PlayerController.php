@@ -14,7 +14,7 @@ class PlayerController extends Controller
     {
         $players = Player::latest()->where('deleted_at', NULL)->paginate(10);
 
-        return view('giocatori.index', compact('players'))
+        return view('player.index', compact('players'))
 
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -24,7 +24,7 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        return view('giocatori.create');
+        return view('player.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class PlayerController extends Controller
 
 
 
-        return redirect()->route('giocatori.index')
+        return redirect()->route('player.index')
 
             ->with('success', 'Player created successfully.');
     }
@@ -54,7 +54,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        return view('giocatori.show', compact('player'));
+        return view('player.show', compact('player'));
     }
 
     /**
@@ -62,7 +62,7 @@ class PlayerController extends Controller
      */
     public function edit(Player $player)
     {
-        return view('giocatori.edit', compact(var_name: 'player'));
+        return view('player.edit', compact(var_name: 'player'));
     }
 
     /**
@@ -80,7 +80,7 @@ class PlayerController extends Controller
 
         $player->update($request->all());
 
-        return redirect()->route('giocatori.index')
+        return redirect()->route('player.index')
 
             ->with('success', 'Player updated successfully');
     }
@@ -92,7 +92,7 @@ class PlayerController extends Controller
     {
         $player->delete();
 
-        return redirect()->route('giocatori.index')
+        return redirect()->route('player.index')
 
             ->with('success', 'Player deleted successfully');
     }

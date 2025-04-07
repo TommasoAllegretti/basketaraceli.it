@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 space-y-6">
 
                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    href="{{ route('giocatori.create') }}">
+                    href="{{ route('player.create') }}">
                     {{ __('Crea nuovo giocatore') }}
                 </a>
 
@@ -60,39 +60,39 @@
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $player->jersey_number }}
+                                            {{ $player->jersey_number ?? '-' }}
                                         </th>
                                         <td class="px-6 py-4">
                                             {{ $player->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->position }}
+                                            {{ $player->position ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->height_cm }}
+                                            {{ $player->height_cm ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->points_per_game }}
+                                            {{ $player->points_per_game ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->rebounds_per_game }}
+                                            {{ $player->rebounds_per_game ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->assists_per_game }}
+                                            {{ $player->assists_per_game ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('giocatori.destroy', $player->id) }}" method="POST"
+                                            <form action="{{ route('player.destroy', $player->id) }}" method="POST"
                                                 class="space-x-2">
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('giocatori.show', $player->id) }}">Show</a>
+                                                    href="{{ route('player.show', $player->id) }}">Show</a>
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('giocatori.edit', $player->id) }}">Edit</a>
+                                                    href="{{ route('player.edit', $player->id) }}">Edit</a>
 
 
 
