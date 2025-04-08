@@ -19,10 +19,6 @@
 
                         <div>
                             <x-input-label for="team_id" :value="__('Squadra (obbligatorio)')" />
-                            {{-- <x-select-input id="team" name="team_id" class="mt-1 block w-full" autocomplete="off"
-                                required>
-                                <option value="">test</option>
-                            </x-select-input> --}}
                             <select id="team_id" name="team_id"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 required>
@@ -43,8 +39,18 @@
 
                         <div>
                             <x-input-label for="position" :value="__('Posizione')" />
-                            <x-text-input id="position" name="position" type="text" class="mt-1 block w-full"
-                                autocomplete="off" />
+
+                            <select id="position" name="position"
+                                class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                required>
+                                <option value="" selected></option>
+                                <option value="Playmaker">Playmaker</option>
+                                <option value="Guardia">Guardia</option>
+                                <option value="Ala piccola">Ala piccola</option>
+                                <option value="Ala grande">Ala grande</option>
+                                <option value="Centro">Centro</option>
+
+                            </select>
                         </div>
 
                         <div>
