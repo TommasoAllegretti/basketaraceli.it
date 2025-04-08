@@ -44,7 +44,7 @@ class TeamController extends Controller
 
 
 
-        return redirect()->route('team.index')
+        return redirect()->route('teams.index')
 
             ->with('success', 'Team created successfully.');
     }
@@ -90,7 +90,7 @@ class TeamController extends Controller
     {
         $team->delete();
 
-        return redirect()->route('team.index')
+        return redirect()->route('teams.index')
 
             ->with('success', 'Team deleted successfully');
     }

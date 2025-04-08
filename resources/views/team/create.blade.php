@@ -14,43 +14,19 @@
                         {{ __('Nuovo giocatore') }}
                     </h2>
 
-                    <form method="POST" action="{{ route('players.store') }}" class="my-6 space-y-6">
+                    <form method="POST" action="{{ route('teams.store') }}" class="my-6 space-y-6">
                         @csrf
 
                         <div>
-                            <x-input-label for="player_name" :value="__('Nome (obbligatorio)')" />
-                            <x-text-input id="player_name" name="name" type="text" class="mt-1 block w-full"
+                            <x-input-label for="team_name" :value="__('Nome (obbligatorio)')" />
+                            <x-text-input id="team_name" name="name" type="text" class="mt-1 block w-full"
                                 autocomplete="off" required />
                         </div>
 
                         <div>
-                            <x-input-label for="position" :value="__('Posizione')" />
-                            <x-text-input id="position" name="position" type="text" class="mt-1 block w-full"
-                                autocomplete="off" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="height_cm" :value="__('Altezza (cm)')" />
-                            <x-text-input id="height_cm" name="height_cm" type="number" class="mt-1 block w-full"
-                                autocomplete="off" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="birth_date" :value="__('Data di nascita')" />
-                            <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full"
-                                autocomplete="off" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="team" :value="__('Squadra')" />
-                            <x-text-input id="team" name="team" type="text" class="mt-1 block w-full"
-                                autocomplete="off" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="jersey_number" :value="__('Numero maglia')" />
-                            <x-text-input id="jersey_number" name="jersey_number" type="number"
-                                class="mt-1 block w-full" autocomplete="off" />
+                            <x-input-label for="abbreviation" :value="__('Abbreviazione')" />
+                            <x-text-input id="abbreviation" name="abbreviation" type="text" class="mt-1 block w-full"
+                                autocomplete="off" required />
                         </div>
 
                         <div class="flex items-center gap-4">
