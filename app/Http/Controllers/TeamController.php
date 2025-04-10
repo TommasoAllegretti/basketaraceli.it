@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Models\League;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -24,7 +25,9 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('team.create');
+        $leagues = League::all()->where('deleted_at', NULL);
+
+        return view('team.create', compact('leagues'));
     }
 
     /**

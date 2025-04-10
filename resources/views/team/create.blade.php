@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Gestione giocatori') }}
+            {{ __('Gestione squadre') }}
         </h2>
     </x-slot>
 
@@ -11,11 +11,25 @@
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Nuovo giocatore') }}
+                        {{ __('Nuova squadra') }}
                     </h2>
 
                     <form method="POST" action="{{ route('teams.store') }}" class="my-6 space-y-6">
                         @csrf
+
+                        <div>
+                            <x-input-label for="league_id" :value="__('Categoria (obbligatorio)')" />
+                            <select id="league_id" name="league_id"
+                                class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                required>
+                                <option value="" selected></option>
+
+                                @foreach ($leagues as $league)
+                                    <option value="{{ $league->id }}">{{ $league->name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
 
                         <div>
                             <x-input-label for="team_name" :value="__('Nome (obbligatorio)')" />

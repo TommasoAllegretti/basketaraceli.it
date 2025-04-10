@@ -6,24 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Team extends Model
+class League extends Model
 {
     use HasFactory, SoftDeletes;
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
-        'abbreviation',
-        'league_id'
     ];
 
-
-    public function players()
+    public function teams()
     {
-        return $this->hasMany(Player::class);
-    }
-
-    public function league()
-    {
-        return $this->belongsTo(League::class);
+        return $this->hasMany(Team::class);
     }
 }

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Gestione squadre') }}
+            {{ __('Gestione categorie') }}
         </h2>
     </x-slot>
 
@@ -10,27 +10,24 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 space-y-6">
 
                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    href="{{ route('teams.create') }}">
-                    {{ __('Crea nuova squadra') }}
+                    href="{{ route('leagues.create') }}">
+                    {{ __('Crea nuova categoria') }}
                 </a>
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-                    @if ($teams->isEmpty())
+                    @if ($leagues->isEmpty())
                         <p class="text-center text-gray-500 dark:text-gray-400">
-                            {{ __('Nessuna squadra trovata.') }}
+                            {{ __('Nessuna categoria trovata.') }}
                         </p>
                     @endif
 
-                    @if (!$teams->isEmpty())
+                    @if (!$leagues->isEmpty())
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Nome
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Categoria
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right">
                                         Azioni
@@ -39,32 +36,27 @@
                             </thead>
                             <tbody>
 
-                                @foreach ($teams as $team)
+                                @foreach ($leagues as $league)
 
                                     <tr
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                                         <td class="px-6 py-4">
-                                            {{ $team->abbreviation . ' - ' . $team->name }}
+                                            {{ $league->name }}
                                         </td>
-
-                                        <td class="px-6 py-4">
-                                            {{ $team->league->name ?? '-' }}
-                                        </td>
-
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('teams.destroy', $team->id) }}" method="POST"
+                                            <form action="{{ route('leagues.destroy', $league->id) }}" method="POST"
                                                 class="space-x-2">
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('teams.show', $team->id) }}">Show</a>
+                                                    href="{{ route('leagues.show', $league->id) }}">Show</a>
 
 
 
                                                 <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    href="{{ route('teams.edit', $team->id) }}">Edit</a>
+                                                    href="{{ route('leagues.edit', $league->id) }}">Edit</a>
 
 
 
