@@ -65,7 +65,9 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('team.edit', compact(var_name: 'team'));
+        $leagues = League::all()->where('deleted_at', NULL);
+
+        return view('team.edit', compact('team', 'leagues'));
     }
 
     /**
@@ -81,7 +83,7 @@ class TeamController extends Controller
 
         $team->update($request->all());
 
-        return redirect()->route('team.index')
+        return redirect()->route('teams.index')
 
             ->with('success', 'Team updated successfully');
     }
