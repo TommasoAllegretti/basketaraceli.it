@@ -17,7 +17,7 @@ class PlayerFactory extends Factory
      */
     public function definition(): array
     {
-        $positions = ['Guard', 'Forward', 'Center'];
+        $positions = ['Playmaker', 'Guardia', 'Ala piccola', 'Ala grande', 'Centro'];
         $teams = ['Lakers', 'Warriors', 'Celtics', 'Nets', 'Bulls', 'Heat'];
 
         return [

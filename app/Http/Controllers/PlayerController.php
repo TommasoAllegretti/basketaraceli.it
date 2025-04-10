@@ -72,7 +72,9 @@ class PlayerController extends Controller
      */
     public function edit(Player $player)
     {
-        return view('players.edit', compact(var_name: 'player'));
+        $teams = Team::all()->where('deleted_at', NULL);
+
+        return view('players.edit', compact('player', 'teams'));
     }
 
     /**
