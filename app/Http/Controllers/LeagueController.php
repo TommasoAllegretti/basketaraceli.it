@@ -78,7 +78,7 @@ class LeagueController extends Controller
 
         $league->update($request->all());
 
-        return redirect()->route('league.index')
+        return redirect()->route('leagues.index')
 
             ->with('success', 'League updated successfully');
     }
