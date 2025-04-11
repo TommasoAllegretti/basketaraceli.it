@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlayerController;
@@ -48,6 +49,7 @@ Route::get('/dashboard', function () {
 Route::resource('leagues', LeagueController::class)->middleware(['auth', 'verified', 'admin']);
 Route::resource('teams', TeamController::class)->middleware(['auth', 'verified', 'admin']);
 Route::resource('players', PlayerController::class)->middleware(['auth', 'verified', 'admin']);
+Route::resource('games', GameController::class)->middleware(['auth', 'verified', 'admin']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -16,6 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (Auth::user()->admin == 1)
+                    <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
+                        {{ __('Partite') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                         {{ __('Giocatori') }}
                     </x-nav-link>
@@ -83,6 +86,9 @@
             </x-responsive-nav-link>
             
             @if (Auth::user()->admin == 1)
+            <x-responsive-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
+                {{ __('Partite') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
                 {{ __('Giocatori') }}
             </x-responsive-nav-link>
