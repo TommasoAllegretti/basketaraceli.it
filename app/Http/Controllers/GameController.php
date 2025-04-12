@@ -6,6 +6,7 @@ use App\Models\Game;
 use Illuminate\Http\Request;
 
 use App\Models\Team;
+use App\Models\Player;
 
 class GameController extends Controller
 {
@@ -27,8 +28,9 @@ class GameController extends Controller
     public function create()
     {
         $teams = Team::all()->where('deleted_at', NULL);
+        $players = Player::all()->where('deleted_at', NULL);
 
-        return view('game.create', compact('teams'));
+        return view('game.create', compact('teams', 'players'));
     }
 
     /**
@@ -36,17 +38,38 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-
-            'name' => 'required',
-
+        $validated = $request->validate([
+            'stats.*.player_id' => 'required|integer',
+            'stats.*.seconds_played' => 'integer',
+            'stats.*.points' => 'integer',
+            'stats.*.field_goals_made' => 'integer',
+            'stats.*.field_goals_attempted' => 'integer',
+            'stats.*.field_goal_percentage' => 'integer',
+            'stats.*.three_point_field_goals_made' => 'integer',
+            'stats.*.three_point_field_goals_attempted' => 'integer',
+            'stats.*.three_point_field_goal_percentage' => 'integer',
+            'stats.*.free_throws_made' => 'integer',
+            'stats.*.free_throws_attempted' => 'integer',
+            'stats.*.free_throw_percentage' => 'integer',
+            'stats.*.offensive_rebounds' => 'integer',
+            'stats.*.defensive_rebounds' => 'integer',
+            'stats.*.total_rebounds' => 'integer',
+            'stats.*.assists' => 'integer',
+            'stats.*.turnovers' => 'integer',
+            'stats.*.blocks' => 'integer',
+            'stats.*.personal_fouls' => 'integer',
+            'stats.*.performance_index_rating' => 'integer',
+            'stats.*.efficiency' => 'integer',
+            'stats.*.plus_minus' => 'integer',
         ]);
 
 
 
-        Game::create($request->all());
+        $game = Game::create($request->all());
 
-
+        foreach ($validated['stats'] as $stat) {
+            $game->stats()->create($stat);
+        }
 
         return redirect()->route('games.index')
 

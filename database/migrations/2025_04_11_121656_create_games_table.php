@@ -25,10 +25,10 @@ return new class extends Migration {
             $table->integer('away_team_third_quarter_score')->nullable();
             $table->integer('home_team_fourth_quarter_score')->nullable();
             $table->integer('away_team_fourth_quarter_score')->nullable();
-            $table->foreignId('top_scorer_id')->constrained('players')->onDelete('cascade');
-            $table->foreignId('top_rebounder_id')->constrained('players')->onDelete('cascade');
-            $table->foreignId('top_assister_id')->constrained('players')->onDelete('cascade');
-            $table->foreignId('top_efficiency_id')->constrained('players')->onDelete('cascade');
+            $table->foreignId('top_scorer_id')->nullable()->constrained('players')->onDelete('cascade');
+            $table->foreignId('top_rebounder_id')->nullable()->constrained('players')->onDelete('cascade');
+            $table->foreignId('top_assister_id')->nullable()->constrained('players')->onDelete('cascade');
+            $table->foreignId('top_efficiency_id')->nullable()->constrained('players')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
