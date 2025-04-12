@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use Illuminate\Http\Request;
 
+use App\Models\Team;
+
 class GameController extends Controller
 {
     /**
@@ -24,7 +26,9 @@ class GameController extends Controller
      */
     public function create()
     {
-        return view('game.create');
+        $teams = Team::all()->where('deleted_at', NULL);
+
+        return view('game.create', compact('teams'));
     }
 
     /**
