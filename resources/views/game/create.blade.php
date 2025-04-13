@@ -66,7 +66,7 @@
                             <option value="" selected>-</option>
 
                             @foreach ($players as $player)
-                                <option value="{{ $player->id }}">{{ $player->name }}</option>
+                                <option value="{{ $player->id }}">#{{ $player->jersey_number }} {{ $player->name }}</option>
                             @endforeach
 
                         </select>
