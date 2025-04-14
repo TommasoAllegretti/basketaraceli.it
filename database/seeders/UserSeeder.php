@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use App\Models\Player;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -19,6 +21,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('test'),
             'admin' => 1,
+            'player_id' => Player::inRandomOrder()->first()?->id
         ]);
 
 
@@ -27,6 +30,15 @@ class UserSeeder extends Seeder
             'email' => 'dev@example.com',
             'password' => Hash::make('test'),
             'admin' => 0,
+            'player_id' => Player::inRandomOrder()->first()?->id
+        ]);
+
+
+        DB::table('users')->insert([
+            'name' => 'Francesco Bianchi',
+            'email' => 'dev2@example.com',
+            'password' => Hash::make('test'),
+            'admin' => 0
         ]);
     }
 }

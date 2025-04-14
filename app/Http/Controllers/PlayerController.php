@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Player;
 use App\Models\Team;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
@@ -62,8 +63,17 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Player $player)
+    public function show(Player $player = null)
     {
+        if (!(Auth::user()->admin == 1 || !!Auth::user()->player)) {
+            return redirect()->route('dashboard')
+                ->with('error', 'You do not have permission to view this player.');
+        }
+
+        if (empty($player)) {
+            $player = Player::where('id', Auth::user()->player_id)->first();
+        }
+
         return view('players.show', compact('player'));
     }
 

@@ -36,4 +36,9 @@ class Player extends Model
     {
         return $this->hasMany(Stat::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
