@@ -332,7 +332,7 @@
 
                         <hr>
 
-                        <h3>Inserisci statistiche giocatori</h3>
+                        <h3 class=" text-gray-900 dark:text-gray-100">Inserisci statistiche giocatori</h3>
 
                         <x-secondary-button onclick="addStat()">Aggiungi statistiche giocatore</x-secondary-button>
 
