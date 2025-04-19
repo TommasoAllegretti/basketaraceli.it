@@ -40,11 +40,15 @@ class GameController extends Controller
     {
         $validated = $request->validate([
             'stats.*.player_id' => 'required|integer',
+            'stats.*.minutes_played' => 'integer',
             'stats.*.seconds_played' => 'integer',
             'stats.*.points' => 'integer',
             'stats.*.field_goals_made' => 'integer',
             'stats.*.field_goals_attempted' => 'integer',
             'stats.*.field_goal_percentage' => 'integer',
+            'stats.*.two_point_field_goals_made' => 'integer',
+            'stats.*.two_point_field_goals_attempted' => 'integer',
+            'stats.*.two_point_field_goal_percentage' => 'integer',
             'stats.*.three_point_field_goals_made' => 'integer',
             'stats.*.three_point_field_goals_attempted' => 'integer',
             'stats.*.three_point_field_goal_percentage' => 'integer',
@@ -56,6 +60,7 @@ class GameController extends Controller
             'stats.*.total_rebounds' => 'integer',
             'stats.*.assists' => 'integer',
             'stats.*.turnovers' => 'integer',
+            'stats.*.steals' => 'integer',
             'stats.*.blocks' => 'integer',
             'stats.*.personal_fouls' => 'integer',
             'stats.*.performance_index_rating' => 'integer',
@@ -68,6 +73,9 @@ class GameController extends Controller
         $game = Game::create($request->all());
 
         foreach ($validated['stats'] as $stat) {
+
+            $stat['seconds_played'] += $stat['minutes_played'] * 60;
+
             $game->stats()->create($stat);
         }
 

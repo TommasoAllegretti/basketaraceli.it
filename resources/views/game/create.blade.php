@@ -58,8 +58,8 @@
                 <div class="pb-5 text-sm text-slate-500 space-y-6">
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[player_id]" :value="__('Giocatore (obbligatorio)')" />
-                        <select id="stats${newStatIndex}[player_id]" name="stats${newStatIndex}[player_id]"
+                        <x-input-label for="stats[${newStatIndex}][player_id]" :value="__('Giocatore (obbligatorio)')" />
+                        <select id="stats[${newStatIndex}][player_id]" name="stats[${newStatIndex}][player_id]"
                             class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                             required>
 
@@ -73,198 +73,210 @@
                     </div>
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[seconds_played]" :value="__('Secondi giocati')" />
-                        <x-text-input id="stats${newStatIndex}[seconds_played]" name="stats${newStatIndex}[seconds_played]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                        <x-input-label :value="__('Minuti giocati')" />
+                        <div class="flex items-center gap-2">
+                            <div>
+                                <x-text-input id="stats[${newStatIndex}][minutes_played]" name="stats[${newStatIndex}][minutes_played]"
+                                    type="number" class="mt-1 block w-full" autocomplete="off" />
+                            </div>
+
+                            <span>:</span>
+
+                            <div>
+                                <x-text-input id="stats[${newStatIndex}][seconds_played]" name="stats[${newStatIndex}][seconds_played]"
+                                    type="number" class="mt-1 block w-full" autocomplete="off" />
+                            </div>
+                            
+                        </div>
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[points]" :value="__('Punti')" />
-                        <x-text-input id="stats${newStatIndex}[points]" name="stats${newStatIndex}[points]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][points]" :value="__('Punti')" />
+                        <x-text-input id="stats[${newStatIndex}][points]" name="stats[${newStatIndex}][points]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[field_goals_made]" :value="__('Tiri segnati')" />
-                        <x-text-input id="stats${newStatIndex}[field_goals_made]"
-                            name="stats${newStatIndex}[field_goals_made]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][field_goals_made]" :value="__('Tiri segnati')" />
+                        <x-text-input id="stats[${newStatIndex}][field_goals_made]"
+                            name="stats[${newStatIndex}][field_goals_made]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[field_goals_attempted]" :value="__('Tiri tentati')" />
-                        <x-text-input id="stats${newStatIndex}[field_goals_attempted]"
-                            name="stats${newStatIndex}[field_goals_attempted]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][field_goals_attempted]" :value="__('Tiri tentati')" />
+                        <x-text-input id="stats[${newStatIndex}][field_goals_attempted]"
+                            name="stats[${newStatIndex}][field_goals_attempted]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[field_goal_percentage]" :value="__('Percentuale di tiro')" />
-                        <x-text-input id="stats${newStatIndex}[field_goal_percentage]"
-                            name="stats${newStatIndex}[field_goal_percentage]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][field_goal_percentage]" :value="__('Percentuale di tiro')" />
+                        <x-text-input id="stats[${newStatIndex}][field_goal_percentage]"
+                            name="stats[${newStatIndex}][field_goal_percentage]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[three_point_field_goals_made]"
+                        <x-input-label for="stats[${newStatIndex}][three_point_field_goals_made]"
                             :value="__('Tiri da 3 segnati')" />
-                        <x-text-input id="stats${newStatIndex}[three_point_field_goals_made]"
-                            name="stats${newStatIndex}[three_point_field_goals_made]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][three_point_field_goals_made]"
+                            name="stats[${newStatIndex}][three_point_field_goals_made]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[three_point_field_goals_attmepted]"
+                        <x-input-label for="stats[${newStatIndex}][three_point_field_goals_attempted]"
                             :value="__('Tiri da 3 tentati')" />
-                        <x-text-input id="stats${newStatIndex}[three_point_field_goals_attmepted]"
-                            name="stats${newStatIndex}[three_point_field_goals_attmepted]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][three_point_field_goals_attempted]"
+                            name="stats[${newStatIndex}][three_point_field_goals_attempted]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[three_point_field_goal_percentage]"
+                        <x-input-label for="stats[${newStatIndex}][three_point_field_goal_percentage]"
                             :value="__('Percentuale tiro da 3')" />
-                        <x-text-input id="stats${newStatIndex}[three_point_field_goal_percentage]"
-                            name="stats${newStatIndex}[three_point_field_goal_percentage]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][three_point_field_goal_percentage]"
+                            name="stats[${newStatIndex}][three_point_field_goal_percentage]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[two_point_field_goals_made]"
+                        <x-input-label for="stats[${newStatIndex}][two_point_field_goals_made]"
                             :value="__('Tiri da 2 segnati')" />
-                        <x-text-input id="stats${newStatIndex}[two_point_field_goals_made]"
-                            name="stats${newStatIndex}[two_point_field_goals_made]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][two_point_field_goals_made]"
+                            name="stats[${newStatIndex}][two_point_field_goals_made]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[two_point_field_goals_attmepted]"
+                        <x-input-label for="stats[${newStatIndex}][two_point_field_goals_attempted]"
                             :value="__('Tiri da 2 tentati')" />
-                        <x-text-input id="stats${newStatIndex}[two_point_field_goals_attmepted]"
-                            name="stats${newStatIndex}[two_point_field_goals_attmepted]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][two_point_field_goals_attempted]"
+                            name="stats[${newStatIndex}][two_point_field_goals_attempted]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[two_point_field_goal_percentage]"
+                        <x-input-label for="stats[${newStatIndex}][two_point_field_goal_percentage]"
                             :value="__('Percentuale tiro da 2')" />
-                        <x-text-input id="stats${newStatIndex}[two_point_field_goal_percentage]"
-                            name="stats${newStatIndex}[two_point_field_goal_percentage]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][two_point_field_goal_percentage]"
+                            name="stats[${newStatIndex}][two_point_field_goal_percentage]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[free_throws_made]" :value="__('Tiri liberi segnati')" />
-                        <x-text-input id="stats${newStatIndex}[free_throws_made]"
-                            name="stats${newStatIndex}[free_throws_made]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][free_throws_made]" :value="__('Tiri liberi segnati')" />
+                        <x-text-input id="stats[${newStatIndex}][free_throws_made]"
+                            name="stats[${newStatIndex}][free_throws_made]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[free_throws_attmepted]" :value="__('Tiri liberi tentati')" />
-                        <x-text-input id="stats${newStatIndex}[free_throws_attmepted]"
-                            name="stats${newStatIndex}[free_throws_attmepted]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][free_throws_attempted]" :value="__('Tiri liberi tentati')" />
+                        <x-text-input id="stats[${newStatIndex}][free_throws_attempted]"
+                            name="stats[${newStatIndex}][free_throws_attempted]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[free_throw_percentage]" :value="__('Percentuale tiro libero')" />
-                        <x-text-input id="stats${newStatIndex}[free_throw_percentage]"
-                            name="stats${newStatIndex}[free_throw_percentage]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][free_throw_percentage]" :value="__('Percentuale tiro libero')" />
+                        <x-text-input id="stats[${newStatIndex}][free_throw_percentage]"
+                            name="stats[${newStatIndex}][free_throw_percentage]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[offensive_rebounds]" :value="__('Rimbalzi offensivi')" />
-                        <x-text-input id="stats${newStatIndex}[offensive_rebounds]"
-                            name="stats${newStatIndex}[offensive_rebounds]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][offensive_rebounds]" :value="__('Rimbalzi offensivi')" />
+                        <x-text-input id="stats[${newStatIndex}][offensive_rebounds]"
+                            name="stats[${newStatIndex}][offensive_rebounds]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[defensive_rebounds]" :value="__('Rimbalzi difensivi')" />
-                        <x-text-input id="stats${newStatIndex}[defensive_rebounds]"
-                            name="stats${newStatIndex}[defensive_rebounds]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][defensive_rebounds]" :value="__('Rimbalzi difensivi')" />
+                        <x-text-input id="stats[${newStatIndex}][defensive_rebounds]"
+                            name="stats[${newStatIndex}][defensive_rebounds]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[total_rebounds]" :value="__('Rimbalzi totali')" />
-                        <x-text-input id="stats${newStatIndex}[total_rebounds]" name="stats${newStatIndex}[total_rebounds]"
+                        <x-input-label for="stats[${newStatIndex}][total_rebounds]" :value="__('Rimbalzi totali')" />
+                        <x-text-input id="stats[${newStatIndex}][total_rebounds]" name="stats[${newStatIndex}][total_rebounds]"
                             type="number" class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[assists]" :value="__('Assist')" />
-                        <x-text-input id="stats${newStatIndex}[assists]" name="stats${newStatIndex}[assists]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][assists]" :value="__('Assist')" />
+                        <x-text-input id="stats[${newStatIndex}][assists]" name="stats[${newStatIndex}][assists]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[turnovers]" :value="__('Palle perse')" />
-                        <x-text-input id="stats${newStatIndex}[turnovers]" name="stats${newStatIndex}[turnovers]"
+                        <x-input-label for="stats[${newStatIndex}][turnovers]" :value="__('Palle perse')" />
+                        <x-text-input id="stats[${newStatIndex}][turnovers]" name="stats[${newStatIndex}][turnovers]"
                             type="number" class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[steals]" :value="__('Palle rubate')" />
-                        <x-text-input id="stats${newStatIndex}[steals]" name="stats${newStatIndex}[steals]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][steals]" :value="__('Palle rubate')" />
+                        <x-text-input id="stats[${newStatIndex}][steals]" name="stats[${newStatIndex}][steals]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[blocks]" :value="__('Stoppate')" />
-                        <x-text-input id="stats${newStatIndex}[blocks]" name="stats${newStatIndex}[blocks]" type="number"
+                        <x-input-label for="stats[${newStatIndex}][blocks]" :value="__('Stoppate')" />
+                        <x-text-input id="stats[${newStatIndex}][blocks]" name="stats[${newStatIndex}][blocks]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[personal_fouls]" :value="__('Falli personali')" />
-                        <x-text-input id="stats${newStatIndex}[personal_fouls]" name="stats${newStatIndex}[personal_fouls]"
+                        <x-input-label for="stats[${newStatIndex}][personal_fouls]" :value="__('Falli personali')" />
+                        <x-text-input id="stats[${newStatIndex}][personal_fouls]" name="stats[${newStatIndex}][personal_fouls]"
                             type="number" class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[performance_index_rating]"
+                        <x-input-label for="stats[${newStatIndex}][performance_index_rating]"
                             :value="__('Performance Index Rating')" />
-                        <x-text-input id="stats${newStatIndex}[performance_index_rating]"
-                            name="stats${newStatIndex}[performance_index_rating]" type="number"
+                        <x-text-input id="stats[${newStatIndex}][performance_index_rating]"
+                            name="stats[${newStatIndex}][performance_index_rating]" type="number"
                             class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[efficiency]" :value="__('Efficenza')" />
-                        <x-text-input id="stats${newStatIndex}[efficiency]" name="stats${newStatIndex}[efficiency]"
+                        <x-input-label for="stats[${newStatIndex}][efficiency]" :value="__('Efficenza')" />
+                        <x-text-input id="stats[${newStatIndex}][efficiency]" name="stats[${newStatIndex}][efficiency]"
                             type="number" class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
 
                     <div>
-                        <x-input-label for="stats${newStatIndex}[plus_minus]" :value="__('Plus-Minus')" />
-                        <x-text-input id="stats${newStatIndex}[plus_minus]" name="stats${newStatIndex}[plus_minus]"
+                        <x-input-label for="stats[${newStatIndex}][plus_minus]" :value="__('Plus-Minus')" />
+                        <x-text-input id="stats[${newStatIndex}][plus_minus]" name="stats[${newStatIndex}][plus_minus]"
                             type="number" class="mt-1 block w-full" autocomplete="off" />
                     </div>
 
