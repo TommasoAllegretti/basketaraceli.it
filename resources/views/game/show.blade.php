@@ -52,11 +52,11 @@
                         <div class="bg-white dark:bg-gray-700 shadow-lg rounded-xl w-full p-4">
                             <div class="flex border-b w-full">
                                 <button id="tab1Btn" onclick="activateTab(1)"
-                                    class="tab-btn flex-1 py-2 text-center font-medium border-b-2 hover:bg-gray-100 border-blue-500 text-blue-600 dark:border-blue-200 dark:text-blue-200">
+                                    class="tab-btn flex-1 py-2 text-center font-medium border-b-2 hover:bg-gray-100 dark:hover:bg-gray-800 border-blue-500 text-blue-600 dark:border-blue-200 dark:text-blue-200">
                                     {{ $game->home_team->name }}
                                 </button>
                                 <button id="tab2Btn" onclick="activateTab(2)"
-                                    class="tab-btn flex-1 py-2 text-center font-medium border-b-2 border-transparent hover:bg-gray-100">
+                                    class="tab-btn flex-1 py-2 text-center font-medium border-b-2 border-transparent hover:bg-gray-100 dark:hover:bg-gray-800">
                                     {{ $game->away_team->name }}
                                 </button>
                             </div>
