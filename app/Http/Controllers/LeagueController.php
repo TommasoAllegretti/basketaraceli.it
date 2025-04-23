@@ -54,7 +54,10 @@ class LeagueController extends Controller
      */
     public function show(League $league)
     {
-        return view('league.show', compact('league'));
+
+        $teams = $league->teams()->latest()->where('deleted_at', NULL)->paginate(10);
+
+        return view('league.show', compact('league', 'teams'));
     }
 
     /**
