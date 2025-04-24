@@ -1,1 +1,1 @@
-<h1>Basket Araceli - sito pubblico + CRM.</h1>
+<h1>Basket Araceli - sito pubblico + CRM</h1>
