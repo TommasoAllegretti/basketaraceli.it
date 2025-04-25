@@ -6,7 +6,7 @@
         const tab1Content = document.getElementById('tab1Content');
         const tab2Content = document.getElementById('tab2Content');
         const activeClasses = "border-blue-500 text-blue-600 dark:border-blue-200 dark:text-blue-200";
-        const inactiveClasses = "border-transparent text-gray-600";
+        const inactiveClasses = "border-transparent text-gray-600 dark:text-gray-100";
 
         if (tabNumber === 1) {
             tab1Btn.classList.add(...activeClasses.split(" "));
