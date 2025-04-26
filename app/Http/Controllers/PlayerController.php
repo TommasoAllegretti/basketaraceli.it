@@ -14,7 +14,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Player::with('team')->latest()->where('deleted_at', NULL)->paginate(10);
+        $players = Player::with('teams')->latest()->where('deleted_at', NULL)->paginate(10);
 
         return view('players.index', compact('players'))
 
@@ -36,9 +36,7 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-
-            'team_id' => 'required|integer',
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'nullable|string|max:255',
             'height_cm' => 'nullable|integer',
@@ -47,13 +45,16 @@ class PlayerController extends Controller
             'points_per_game' => 'nullable|numeric',
             'rebounds_per_game' => 'nullable|numeric',
             'assists_per_game' => 'nullable|numeric',
+            'teams' => 'required|array',
+            'teams.*' => 'exists:teams,id',
         ]);
 
 
 
-        Player::create($request->all());
+        $player = Player::create($request->all());
 
 
+        $player->teams()->attach($validated['teams']);
 
         return redirect()->route('players.index')
 

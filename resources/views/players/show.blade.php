@@ -13,7 +13,17 @@
 
                     <div class="space-y-6 lg:w-3/4 xl:w-1/2">
 
-                        <p>Squadra: <span class="font-bold">{{ $player->team->name }}</span></p>
+                        <p>Squadre:
+
+                            @foreach ($player->teams as $key => $teams)
+                                <span class="whitespace-nowrap font-bold">
+                                    {{ $teams->name }}
+                                </span>
+                                @if ($key < count($player->teams) - 1)
+                                    <span>- </span>
+                                @endif
+                            @endforeach
+                        </p>
 
 
                         <p>Posizione: <span class="font-bold">{{ $player->position }}</span></p>

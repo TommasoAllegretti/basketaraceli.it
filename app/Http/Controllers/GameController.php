@@ -94,18 +94,18 @@ class GameController extends Controller
         $away_team_id = $game->away_team_id;
 
         $home_team_stats = $game->stats()
-            ->whereHas('player', function ($query) use ($home_team_id) {
-                $query->where('team_id', $home_team_id);
+            ->whereHas('player.teams', function ($query) use ($home_team_id) {
+                $query->where('teams.id', $home_team_id);
             })
-            ->with('player') // eager load player to avoid N+1
+            ->with('player.teams')
             ->get();
 
 
         $away_team_stats = $game->stats()
-            ->whereHas('player', function ($query) use ($away_team_id) {
-                $query->where('team_id', $away_team_id);
+            ->whereHas('player.teams', function ($query) use ($away_team_id) {
+                $query->where('teams.id', $away_team_id);
             })
-            ->with('player') // eager load player to avoid N+1
+            ->with('player.teams')
             ->get();
 
         return view('game.show', compact('game', 'home_team_stats', 'away_team_stats'))

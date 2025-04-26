@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Team;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Player>
@@ -18,10 +17,8 @@ class PlayerFactory extends Factory
     public function definition(): array
     {
         $positions = ['Playmaker', 'Guardia', 'Ala piccola', 'Ala grande', 'Centro'];
-        $teams = ['Lakers', 'Warriors', 'Celtics', 'Nets', 'Bulls', 'Heat'];
 
         return [
-            'team_id' => Team::inRandomOrder()->first()?->id, // Random team,
             'name' => $this->faker->firstNameMale() . ' ' . $this->faker->lastName(),
             'position' => $this->faker->randomElement($positions),
             'height_cm' => $this->faker->numberBetween(175, 220),

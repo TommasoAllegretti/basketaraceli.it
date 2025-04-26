@@ -27,9 +27,9 @@ class Player extends Model
         'assists_per_game',
     ];
 
-    public function team()
+    public function teams()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsToMany(Team::class);
     }
 
     public function stats()

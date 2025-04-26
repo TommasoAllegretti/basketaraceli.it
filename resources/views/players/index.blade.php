@@ -69,7 +69,11 @@
                                             {{ $player->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $player->team->name }}
+                                            @foreach ($player->teams as $teams)
+                                                <span class="flex whitespace-nowrap">
+                                                    {{ $teams->name }}
+                                                </span>
+                                            @endforeach
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $player->position ?? '-' }}

@@ -18,8 +18,8 @@
                         @csrf
 
                         <div>
-                            <x-input-label for="team_id" :value="__('Squadra (obbligatorio)')" />
-                            <select id="team_id" name="team_id"
+                            <x-input-label for="teams[0]" :value="__('Squadra (obbligatorio)')" />
+                            <select id="teams[0]" name="teams[0]"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 required>
                                 <option value="" selected></option>
