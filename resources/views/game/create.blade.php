@@ -32,18 +32,78 @@
         }
     }
 
-    function addStat() {
-        const statsWrapper = document.getElementById('stats-wrapper');
-        const newStatIndex = statsWrapper.children.length + 1;
+    function roundDecimal() {
+        if (!this.value) {
+            return;
+        }
+        this.value = Math.round(this.value);
+    }
 
-        // Create a new accordion item
-        const newAccordionItem = document.createElement('div');
-        newAccordionItem.className = 'accordion-item border-b border-slate-200';
-        newAccordionItem.innerHTML = `
+    function fixPercentage() {
+        if (!this.value) {
+            return;
+        }
+        if (this.value > 100) {
+            this.value = 100;
+        } else if (this.value < 0) {
+            this.value = 0;
+        } else if (this.value.length > 4) {
+            this.value = parseFloat(this.value).toFixed(2);
+        }
+    }
+
+    function fixSeconds() {
+        if (!this.value) {
+            return;
+        }
+        if (this.value > 59) {
+            this.value = 59;
+        } else if (this.value < 0) {
+            this.value = 0;
+        } else {
+            this.value = Math.round(this.value);
+        }
+    }
+
+    function fixMinutes() {
+        if (!this.value) {
+            return;
+        }
+        if (this.value > 60) {
+            this.value = 60;
+        } else if (this.value < 0) {
+            this.value = 0;
+        } else {
+            this.value = Math.round(this.value);
+        }
+    }
+
+    function updateTeamTotalScore(home) {
+        const totalScoreInput = document.getElementById(home ? 'home_team_total_score' : 'away_team_total_score');
+        const mockTotalScoreInput = document.getElementById(home ? 'mock_home_team_total_score' : 'mock_away_team_total_score');
+        const quarterScores = Array.from(document.querySelectorAll(home ? 'input[name^="home_team_quarters"]' : 'input[name^="away_team_quarters"]'));
+        const totalScore = quarterScores.reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
+        totalScoreInput.value = totalScore;
+        mockTotalScoreInput.value = totalScore;
+    }
+
+    function addStatForPlayer(checkbox) {
+        const statsWrapper = document.getElementById('stats-wrapper');
+        const playerId = checkbox.getAttribute('data-player-id');
+        const playerName = checkbox.getAttribute('data-player-name');
+        const newStatIndex = statsWrapper.children.length;
+
+        if (checkbox.checked) {
+            // Add a new stat element for the player
+            const newStatElement = document.createElement('div');
+            newStatElement.className = 'stat-item border rounded-md';
+            newStatElement.setAttribute('data-player-id', playerId);
+
+            newStatElement.innerHTML = `
             
             <button onclick="toggleAccordion(event, ${newStatIndex})"
-                class="w-full flex justify-between items-center py-5 text-slate-800">
-                <span>Statistiche Giocatore ${newStatIndex}</span>
+                class="w-full flex justify-between items-center p-6 text-slate-800">
+                <span>Statistiche <b>${playerName}</b></span>
                 <span id="icon-1" class="text-slate-800 transition-transform duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                         class="w-4 h-4">
@@ -54,21 +114,18 @@
                 </span>
             </button>
             <div id="content-${newStatIndex}"
-                class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-6">
                 <div class="pb-5 text-sm text-slate-500 space-y-6">
 
-                    <div>
+                    <div class="hidden">
                         <x-input-label for="stats[${newStatIndex}][player_id]" :value="__('Giocatore (obbligatorio)')" />
                         <select id="stats[${newStatIndex}][player_id]" name="stats[${newStatIndex}][player_id]"
                             class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                            readonly
                             required>
 
-                            <option value="" selected>-</option>
-
-                            @foreach ($players as $player)
-                                <option value="{{ $player->id }}">#{{ $player->jersey_number }} {{ $player->name }}</option>
-                            @endforeach
-
+                            <option value="${playerId}" selected>${playerName}</option>
+                            
                         </select>
                     </div>
 
@@ -77,14 +134,14 @@
                         <div class="flex items-center gap-2">
                             <div>
                                 <x-text-input id="stats[${newStatIndex}][minutes_played]" name="stats[${newStatIndex}][minutes_played]"
-                                    type="number" class="mt-1 block w-full" autocomplete="off" />
+                                    type="number" min="0" oninput="fixMinutes.call(this)" class="mt-1 block w-full" autocomplete="off" />
                             </div>
 
                             <span>:</span>
 
                             <div>
                                 <x-text-input id="stats[${newStatIndex}][seconds_played]" name="stats[${newStatIndex}][seconds_played]"
-                                    type="number" class="mt-1 block w-full" autocomplete="off" />
+                                    type="number" min="0" class="mt-1 block w-full" oninput="fixSeconds.call(this)" autocomplete="off" />
                             </div>
                             
                         </div>
@@ -93,32 +150,32 @@
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][points]" :value="__('Punti')" />
-                        <x-text-input id="stats[${newStatIndex}][points]" name="stats[${newStatIndex}][points]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                        <x-text-input id="stats[${newStatIndex}][points]" name="stats[${newStatIndex}][points]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][field_goals_made]" :value="__('Tiri segnati')" />
                         <x-text-input id="stats[${newStatIndex}][field_goals_made]"
-                            name="stats[${newStatIndex}][field_goals_made]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][field_goals_made]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][field_goals_attempted]" :value="__('Tiri tentati')" />
                         <x-text-input id="stats[${newStatIndex}][field_goals_attempted]"
-                            name="stats[${newStatIndex}][field_goals_attempted]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][field_goals_attempted]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][field_goal_percentage]" :value="__('Percentuale di tiro')" />
                         <x-text-input id="stats[${newStatIndex}][field_goal_percentage]"
-                            name="stats[${newStatIndex}][field_goal_percentage]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][field_goal_percentage]" type="number" min="0" step="0.01"
+                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -126,8 +183,8 @@
                         <x-input-label for="stats[${newStatIndex}][three_point_field_goals_made]"
                             :value="__('Tiri da 3 segnati')" />
                         <x-text-input id="stats[${newStatIndex}][three_point_field_goals_made]"
-                            name="stats[${newStatIndex}][three_point_field_goals_made]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][three_point_field_goals_made]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -135,8 +192,8 @@
                         <x-input-label for="stats[${newStatIndex}][three_point_field_goals_attempted]"
                             :value="__('Tiri da 3 tentati')" />
                         <x-text-input id="stats[${newStatIndex}][three_point_field_goals_attempted]"
-                            name="stats[${newStatIndex}][three_point_field_goals_attempted]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][three_point_field_goals_attempted]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -144,8 +201,8 @@
                         <x-input-label for="stats[${newStatIndex}][three_point_field_goal_percentage]"
                             :value="__('Percentuale tiro da 3')" />
                         <x-text-input id="stats[${newStatIndex}][three_point_field_goal_percentage]"
-                            name="stats[${newStatIndex}][three_point_field_goal_percentage]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][three_point_field_goal_percentage]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -153,8 +210,8 @@
                         <x-input-label for="stats[${newStatIndex}][two_point_field_goals_made]"
                             :value="__('Tiri da 2 segnati')" />
                         <x-text-input id="stats[${newStatIndex}][two_point_field_goals_made]"
-                            name="stats[${newStatIndex}][two_point_field_goals_made]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][two_point_field_goals_made]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -162,8 +219,8 @@
                         <x-input-label for="stats[${newStatIndex}][two_point_field_goals_attempted]"
                             :value="__('Tiri da 2 tentati')" />
                         <x-text-input id="stats[${newStatIndex}][two_point_field_goals_attempted]"
-                            name="stats[${newStatIndex}][two_point_field_goals_attempted]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][two_point_field_goals_attempted]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -171,90 +228,90 @@
                         <x-input-label for="stats[${newStatIndex}][two_point_field_goal_percentage]"
                             :value="__('Percentuale tiro da 2')" />
                         <x-text-input id="stats[${newStatIndex}][two_point_field_goal_percentage]"
-                            name="stats[${newStatIndex}][two_point_field_goal_percentage]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][two_point_field_goal_percentage]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][free_throws_made]" :value="__('Tiri liberi segnati')" />
                         <x-text-input id="stats[${newStatIndex}][free_throws_made]"
-                            name="stats[${newStatIndex}][free_throws_made]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][free_throws_made]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][free_throws_attempted]" :value="__('Tiri liberi tentati')" />
                         <x-text-input id="stats[${newStatIndex}][free_throws_attempted]"
-                            name="stats[${newStatIndex}][free_throws_attempted]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][free_throws_attempted]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][free_throw_percentage]" :value="__('Percentuale tiro libero')" />
                         <x-text-input id="stats[${newStatIndex}][free_throw_percentage]"
-                            name="stats[${newStatIndex}][free_throw_percentage]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][free_throw_percentage]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][offensive_rebounds]" :value="__('Rimbalzi offensivi')" />
                         <x-text-input id="stats[${newStatIndex}][offensive_rebounds]"
-                            name="stats[${newStatIndex}][offensive_rebounds]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][offensive_rebounds]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][defensive_rebounds]" :value="__('Rimbalzi difensivi')" />
                         <x-text-input id="stats[${newStatIndex}][defensive_rebounds]"
-                            name="stats[${newStatIndex}][defensive_rebounds]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            name="stats[${newStatIndex}][defensive_rebounds]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][total_rebounds]" :value="__('Rimbalzi totali')" />
                         <x-text-input id="stats[${newStatIndex}][total_rebounds]" name="stats[${newStatIndex}][total_rebounds]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                            type="number" min="0" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][assists]" :value="__('Assist')" />
-                        <x-text-input id="stats[${newStatIndex}][assists]" name="stats[${newStatIndex}][assists]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                        <x-text-input id="stats[${newStatIndex}][assists]" name="stats[${newStatIndex}][assists]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][turnovers]" :value="__('Palle perse')" />
                         <x-text-input id="stats[${newStatIndex}][turnovers]" name="stats[${newStatIndex}][turnovers]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                            type="number" min="0" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][steals]" :value="__('Palle rubate')" />
-                        <x-text-input id="stats[${newStatIndex}][steals]" name="stats[${newStatIndex}][steals]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                        <x-text-input id="stats[${newStatIndex}][steals]" name="stats[${newStatIndex}][steals]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][blocks]" :value="__('Stoppate')" />
-                        <x-text-input id="stats[${newStatIndex}][blocks]" name="stats[${newStatIndex}][blocks]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                        <x-text-input id="stats[${newStatIndex}][blocks]" name="stats[${newStatIndex}][blocks]" type="number" min="0"
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][personal_fouls]" :value="__('Falli personali')" />
                         <x-text-input id="stats[${newStatIndex}][personal_fouls]" name="stats[${newStatIndex}][personal_fouls]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                            type="number" min="0" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -263,28 +320,125 @@
                             :value="__('Performance Index Rating')" />
                         <x-text-input id="stats[${newStatIndex}][performance_index_rating]"
                             name="stats[${newStatIndex}][performance_index_rating]" type="number"
-                            class="mt-1 block w-full" autocomplete="off" />
+                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][efficiency]" :value="__('Efficenza')" />
                         <x-text-input id="stats[${newStatIndex}][efficiency]" name="stats[${newStatIndex}][efficiency]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                            type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][plus_minus]" :value="__('Plus-Minus')" />
                         <x-text-input id="stats[${newStatIndex}][plus_minus]" name="stats[${newStatIndex}][plus_minus]"
-                            type="number" class="mt-1 block w-full" autocomplete="off" />
+                            type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
                     </div>
 
                 </div>
             </div>
         `;
 
-        statsWrapper.appendChild(newAccordionItem);
+
+            statsWrapper.appendChild(newStatElement);
+        } else {
+            // Remove the stat element for the player
+            const statElement = statsWrapper.querySelector(`.stat-item[data-player-id="${playerId}"]`);
+            if (statElement) {
+                statsWrapper.removeChild(statElement);
+            }
+        }
+    }
+
+    async function toggleHomeTeamRoster(e) {
+        const homeTeamDetails = document.getElementById('homeTeamDetails');
+        if (!this.value) {
+            homeTeamDetails.classList.add('hidden');
+            return
+        }
+
+        try {
+            const response = await fetch(`/teams/${this.value}/players`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch players');
+            }
+            const playersList = document.getElementById('homeTeamPlayersList');
+
+            const players = await response.json();
+            playersList.innerHTML = players
+                .map(player => `
+                    <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="player-checkbox" data-player-id="${player.id}" data-player-name="${player.name}" onchange="addStatForPlayer(this)">
+                            <span>${player.name}</span>
+                        </label>
+                    </div>
+                `)
+                .join('');
+
+            homeTeamDetails.classList.remove('hidden');
+        } catch (error) {
+            console.error(error);
+            playersList.innerHTML = '<li>Error loading players</li>';
+        }
+    }
+
+    async function toggleAwayTeamRoster(e) {
+        const awayTeamDetails = document.getElementById('awayTeamDetails');
+        if (!this.value) {
+            awayTeamDetails.classList.add('hidden');
+            return
+        }
+
+        try {
+            const response = await fetch(`/teams/${this.value}/players`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch players');
+            }
+            const playersList = document.getElementById('awayTeamPlayersList');
+
+            const players = await response.json();
+            playersList.innerHTML = players
+                .map(player => `
+                    <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="player-checkbox" data-player-id="${player.id}" data-player-name="${player.name}" onchange="addStatForPlayer(this)">
+                            <span>${player.name}</span>
+                        </label>
+                    </div>
+                `)
+                .join('');
+
+            awayTeamDetails.classList.remove('hidden');
+        } catch (error) {
+            console.error(error);
+            playersList.innerHTML = '<li>Error loading players</li>';
+        }
+    }
+
+
+    function toggleScoreInput(type) {
+        const totalScoreInput = document.getElementById('totalScoreInput');
+        const quarterScoresInput = document.getElementById('quarterScoresInput');
+
+        if (type === 'total') {
+            totalScoreInput.classList.remove('hidden');
+            quarterScoresInput.classList.add('hidden');
+            quarterScoresInput.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+            totalScoreInput.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+        } else if (type === 'quarters') {
+            totalScoreInput.classList.add('hidden');
+            quarterScoresInput.classList.remove('hidden');
+            totalScoreInput.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+        }
     }
 
 </script>
@@ -305,20 +459,20 @@
                         {{ __('Nuova partita') }}
                     </h2>
 
-                    <form method="POST" action="{{ route('games.store') }}" class="my-6 space-y-6">
+                    <form method="POST" action="{{ route('games.store') }}" class="m-6 space-y-6">
                         @csrf
 
                         <div>
-                            <x-input-label for="date" :value="__('Data')" />
-                            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full"
-                                autocomplete="off" />
+                            <x-input-label for="date" :value="__('Data (obbligatorio)')" />
+                            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full" autocomplete="off"
+                                required />
                         </div>
 
                         <div>
                             <x-input-label for="home_team_id" :value="__('Locali (obbligatorio)')" />
                             <select id="home_team_id" name="home_team_id"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                required>
+                                onchange="toggleHomeTeamRoster.call(this, event)" required>
                                 <option value="" selected></option>
 
                                 @foreach ($teams as $team)
@@ -326,13 +480,19 @@
                                 @endforeach
 
                             </select>
+                        </div>
+
+                        <div id="homeTeamDetails" class="mt-4 hidden">
+                            <h3 class="text-gray-700 dark:text-gray-300">Players:</h3>
+                            <ul id="homeTeamPlayersList" class="list-disc list-inside text-gray-700 dark:text-gray-300">
+                            </ul>
                         </div>
 
                         <div>
                             <x-input-label for="away_team_id" :value="__('Ospiti (obbligatorio)')" />
                             <select id="away_team_id" name="away_team_id"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                required>
+                                onchange="toggleAwayTeamRoster.call(this, event)" required>
                                 <option value="" selected></option>
 
                                 @foreach ($teams as $team)
@@ -342,16 +502,87 @@
                             </select>
                         </div>
 
-                        <hr>
-
-                        <h3 class=" text-gray-900 dark:text-gray-100">Inserisci statistiche giocatori</h3>
-
-                        <x-secondary-button onclick="addStat()">Aggiungi statistiche giocatore</x-secondary-button>
-
-                        <div id="stats-wrapper">
-
-
+                        <div id="awayTeamDetails" class="mt-4 hidden">
+                            <h3 class="text-gray-700 dark:text-gray-300">Players:</h3>
+                            <ul id="awayTeamPlayersList" class="list-disc list-inside text-gray-700 dark:text-gray-300">
+                            </ul>
                         </div>
+
+                        <div class="mt-6">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                {{ __('Risultato della partita') }}
+                            </h3>
+                            <div class="mt-4">
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="score_input_type" value="total" checked
+                                        onchange="toggleScoreInput('total')">
+                                    <span>{{ __('Inserisci punteggio totale') }}</span>
+                                </label>
+                                <label class="flex items-center space-x-2 mt-2">
+                                    <input type="radio" name="score_input_type" value="quarters"
+                                        onchange="toggleScoreInput('quarters')">
+                                    <span>{{ __('Inserisci punteggio per quarti') }}</span>
+                                </label>
+                            </div>
+
+                            <!-- Total Score Input -->
+                            <div id="totalScoreInput" class="mt-4">
+                                <div class="flex items-center gap-4">
+                                    <div>
+                                        <x-input-label for="home_team_total_score" :value="__('Punteggio totale Locali')" />
+                                        <x-text-input id="home_team_total_score" name="home_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="away_team_total_score" :value="__('Punteggio totale Ospiti')" />
+                                        <x-text-input id="away_team_total_score" name="away_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quarter Scores Input -->
+                            <div id="quarterScoresInput" class="mt-4 hidden space-y-6">
+                                @for ($i = 1; $i <= 4; $i++)
+                                    <div class="flex items-center gap-4">
+                                        <div>
+                                            <x-input-label for="home_team_quarter_{{ $i }}"
+                                                value="Punteggio Locali Q{{ $i }}" />
+                                            <x-text-input id="home_team_quarter_{{ $i }}"
+                                                name="home_team_quarters[{{ $i }}]" type="number" min="0"
+                                                class="mt-1 block w-full" oninput="updateTeamTotalScore(true)"
+                                                autocomplete="off" />
+                                        </div>
+                                        <div>
+                                            <x-input-label for="away_team_quarter_{{ $i }}"
+                                                value="Punteggio Ospiti Q{{ $i }}" />
+                                            <x-text-input id="away_team_quarter_{{ $i }}"
+                                                name="away_team_quarters[{{ $i }}]" type="number" min="0"
+                                                class="mt-1 block w-full" oninput="updateTeamTotalScore(false)"
+                                                autocomplete="off" />
+                                        </div>
+                                    </div>
+                                @endfor
+                                <div class="flex items-center gap-4">
+                                    <div>
+                                        <x-input-label for="mock_home_team_total_score"
+                                            value="Punteggio totale Locali" />
+                                        <x-text-input id="mock_home_team_total_score" name="mock_home_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" readonly
+                                            autocomplete="off" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="mock_away_team_total_score"
+                                            value="Punteggio totale Ospiti" />
+                                        <x-text-input id="mock_away_team_total_score" name="mock_away_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" readonly
+                                            autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="stats-wrapper" class="mt-6 space-y-4"></div>
 
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Salva') }}</x-primary-button>
@@ -360,5 +591,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

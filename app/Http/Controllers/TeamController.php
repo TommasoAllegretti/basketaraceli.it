@@ -102,4 +102,15 @@ class TeamController extends Controller
 
             ->with('success', 'Team deleted successfully');
     }
+
+    public function getPlayers($teamId)
+    {
+        $team = Team::with('players')->find($teamId);
+
+        if (!$team) {
+            return response()->json(['error' => 'Team not found'], 404);
+        }
+
+        return response()->json($team->players);
+    }
 }

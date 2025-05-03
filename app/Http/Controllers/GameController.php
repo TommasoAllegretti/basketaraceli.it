@@ -40,32 +40,32 @@ class GameController extends Controller
     {
         $validated = $request->validate([
             'stats.*.player_id' => 'required|integer',
-            'stats.*.minutes_played' => 'integer',
-            'stats.*.seconds_played' => 'integer',
-            'stats.*.points' => 'integer',
-            'stats.*.field_goals_made' => 'integer',
-            'stats.*.field_goals_attempted' => 'integer',
-            'stats.*.field_goal_percentage' => 'integer',
-            'stats.*.two_point_field_goals_made' => 'integer',
-            'stats.*.two_point_field_goals_attempted' => 'integer',
-            'stats.*.two_point_field_goal_percentage' => 'integer',
-            'stats.*.three_point_field_goals_made' => 'integer',
-            'stats.*.three_point_field_goals_attempted' => 'integer',
-            'stats.*.three_point_field_goal_percentage' => 'integer',
-            'stats.*.free_throws_made' => 'integer',
-            'stats.*.free_throws_attempted' => 'integer',
-            'stats.*.free_throw_percentage' => 'integer',
-            'stats.*.offensive_rebounds' => 'integer',
-            'stats.*.defensive_rebounds' => 'integer',
-            'stats.*.total_rebounds' => 'integer',
-            'stats.*.assists' => 'integer',
-            'stats.*.turnovers' => 'integer',
-            'stats.*.steals' => 'integer',
-            'stats.*.blocks' => 'integer',
-            'stats.*.personal_fouls' => 'integer',
-            'stats.*.performance_index_rating' => 'integer',
-            'stats.*.efficiency' => 'integer',
-            'stats.*.plus_minus' => 'integer',
+            'stats.*.minutes_played' => 'nullable | integer',
+            'stats.*.seconds_played' => 'nullable | integer',
+            'stats.*.points' => 'nullable | integer',
+            'stats.*.field_goals_made' => 'nullable | integer',
+            'stats.*.field_goals_attempted' => 'nullable | integer',
+            'stats.*.field_goal_percentage' => 'nullable | numeric',
+            'stats.*.two_point_field_goals_made' => 'nullable | integer',
+            'stats.*.two_point_field_goals_attempted' => 'nullable | integer',
+            'stats.*.two_point_field_goal_percentage' => 'nullable | numeric',
+            'stats.*.three_point_field_goals_made' => 'nullable | integer',
+            'stats.*.three_point_field_goals_attempted' => 'nullable | integer',
+            'stats.*.three_point_field_goal_percentage' => 'nullable | numeric',
+            'stats.*.free_throws_made' => 'nullable | integer',
+            'stats.*.free_throws_attempted' => 'nullable | integer',
+            'stats.*.free_throw_percentage' => 'nullable | numeric',
+            'stats.*.offensive_rebounds' => 'nullable | integer',
+            'stats.*.defensive_rebounds' => 'nullable | integer',
+            'stats.*.total_rebounds' => 'nullable | integer',
+            'stats.*.assists' => 'nullable | integer',
+            'stats.*.turnovers' => 'nullable | integer',
+            'stats.*.steals' => 'nullable | integer',
+            'stats.*.blocks' => 'nullable | integer',
+            'stats.*.personal_fouls' => 'nullable | integer',
+            'stats.*.performance_index_rating' => 'nullable | integer',
+            'stats.*.efficiency' => 'nullable | integer',
+            'stats.*.plus_minus' => 'nullable | integer',
         ]);
 
 
@@ -74,7 +74,9 @@ class GameController extends Controller
 
         foreach ($validated['stats'] as $stat) {
 
-            $stat['seconds_played'] += $stat['minutes_played'] * 60;
+            if ($stat['minutes_played'] != null) {
+                $stat['seconds_played'] += $stat['minutes_played'] * 60;
+            }
 
             $game->stats()->create($stat);
         }
@@ -118,7 +120,25 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
-        return view('game.edit', compact(var_name: 'game'));
+        $home_team_id = $game->home_team_id;
+        $away_team_id = $game->away_team_id;
+
+        $home_team_stats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($home_team_id) {
+                $query->where('teams.id', $home_team_id);
+            })
+            ->with('player.teams')
+            ->get();
+
+
+        $away_team_stats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($away_team_id) {
+                $query->where('teams.id', $away_team_id);
+            })
+            ->with('player.teams')
+            ->get();
+        return view('game.edit', compact('game', 'home_team_stats', 'away_team_stats'));
+        ;
     }
 
     /**

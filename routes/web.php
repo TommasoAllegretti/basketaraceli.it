@@ -48,6 +48,7 @@ Route::get('/dashboard', function () {
 
 Route::resource('leagues', LeagueController::class)->middleware(['auth', 'verified', 'admin']);
 Route::resource('teams', TeamController::class)->middleware(['auth', 'verified', 'admin']);
+Route::get('/teams/{team}/players', [TeamController::class, 'getPlayers'])->name('teams.players');
 Route::resource('players', PlayerController::class)->middleware(['auth', 'verified', 'admin']);
 Route::resource('games', GameController::class)->middleware(['auth', 'verified', 'admin']);
 

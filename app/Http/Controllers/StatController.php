@@ -30,7 +30,10 @@ class StatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        Stat::create($request->all());
+
+        return redirect()->route('games.index');
     }
 
     /**
