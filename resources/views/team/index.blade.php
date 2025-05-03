@@ -87,6 +87,11 @@
                     @endif
                 </div>
 
+                <!-- Pagination Links -->
+                <div class="mt-6">
+                    {{ $teams->links() }}
+                </div>
+
             </div>
         </div>
     </div>

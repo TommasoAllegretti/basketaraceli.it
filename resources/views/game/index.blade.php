@@ -94,6 +94,11 @@
                     @endif
                 </div>
 
+                <!-- Pagination Links -->
+                <div class="mt-6">
+                    {{ $games->links() }}
+                </div>
+
             </div>
         </div>
     </div>
