@@ -89,7 +89,7 @@
 
                 <!-- Pagination Links -->
                 <div class="mt-6">
-                    {{ $teams->links() }}
+                    {{ $teams->links('layouts.pagination') }}
                 </div>
 
             </div>

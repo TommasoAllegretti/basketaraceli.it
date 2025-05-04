@@ -82,7 +82,7 @@
 
                 <!-- Pagination Links -->
                 <div class="mt-6">
-                    {{ $leagues->links() }}
+                    {{ $leagues->links('layouts.pagination') }}
                 </div>
             </div>
         </div>

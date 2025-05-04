@@ -127,7 +127,7 @@
 
                 <!-- Pagination Links -->
                 <div class="mt-6">
-                    {{ $players->links() }}
+                    {{ $players->links('layouts.pagination') }}
                 </div>
             </div>
         </div>
