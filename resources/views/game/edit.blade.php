@@ -22,6 +22,65 @@ function toggleScoreInput(type) {
         }
     }
 
+function roundDecimal() {
+    if (!this.value) {
+        return;
+    }
+    this.value = Math.round(this.value);
+}
+
+function fixTotalScore() {
+    if (!this.value) {
+        return;
+    }
+    this.value = Math.round(this.value);
+
+    if (this.value < 0) {
+        this.value = 0;
+    } else if (this.value > 999) {
+        this.value = 999;
+    }
+}
+
+function fixPercentage() {
+    if (!this.value) {
+        return;
+    }
+    if (this.value > 100) {
+        this.value = 100;
+    } else if (this.value < 0) {
+        this.value = 0;
+    } else if (this.value.length > 4) {
+        this.value = parseFloat(this.value).toFixed(2);
+    }
+}
+
+function fixSeconds() {
+    if (!this.value) {
+        return;
+    }
+    if (this.value > 59) {
+        this.value = 59;
+    } else if (this.value < 0) {
+        this.value = 0;
+    } else {
+        this.value = Math.round(this.value);
+    }
+}
+
+function fixMinutes() {
+    if (!this.value) {
+        return;
+    }
+    if (this.value > 60) {
+        this.value = 60;
+    } else if (this.value < 0) {
+        this.value = 0;
+    } else {
+        this.value = Math.round(this.value);
+    }
+}
+
 function fixTotalScore() {
     if (!this.value) {
         return;
