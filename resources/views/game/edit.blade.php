@@ -99,15 +99,15 @@ function addStatForPlayer(checkbox) {
     if (checkbox.checked) {
         // Add a new stat element for the player
         const newStatElement = document.createElement('div');
-        newStatElement.className = 'stat-item border rounded-md';
+        newStatElement.className = 'stat-item border-2 rounded-md dark:border-gray-700 border-gray-200';
         newStatElement.setAttribute('data-player-id', playerId);
 
         newStatElement.innerHTML = `
         
         <button onclick="toggleAccordion(event, ${newStatIndex})"
             class="w-full flex justify-between items-center p-6 text-slate-800">
-            <span>Statistiche <b>${playerName}</b></span>
-            <span id="icon-1" class="text-slate-800 transition-transform duration-300">
+            <span class="dark:text-gray-300">Statistiche <b>${playerName}</b></span>
+            <span id="icon-${newStatIndex}" class="text-slate-800 transition-transform duration-300 dark:text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                     class="w-4 h-4">
                     <path fill-rule="evenodd"
@@ -531,7 +531,7 @@ function addStatForPlayer(checkbox) {
                         <!-- Stats Wrapper -->
                         <div id="stats-wrapper" class="mt-6 space-y-4">
                             @foreach ($game->stats as $index => $stat)
-                                <div class="stat-item border rounded-md" data-player-id="{{ $stat->player_id }}">
+                                <div class="stat-item border-2 rounded-md dark:border-gray-700 border-gray-200" data-player-id="{{ $stat->player_id }}">
                                     
                                     <button onclick="toggleAccordion(event, {{ $index }})"
                                         class="w-full flex justify-between items-center p-6 text-slate-800">
