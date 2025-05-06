@@ -535,8 +535,8 @@ function addStatForPlayer(checkbox) {
                                     
                                     <button onclick="toggleAccordion(event, {{ $index }})"
                                         class="w-full flex justify-between items-center p-6 text-slate-800">
-                                        <span>Statistiche <b>{{ $stat->player->name }}</b></span>
-                                        <span id="icon-1" class="text-slate-800 transition-transform duration-300">
+                                        <span class="dark:text-gray-300">Statistiche <b>{{ $stat->player->name }}</b></span>
+                                        <span id="icon-1" class="text-slate-800 transition-transform duration-300 dark:text-gray-300">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                                 class="w-4 h-4">
                                                 <path fill-rule="evenodd"
