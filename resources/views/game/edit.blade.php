@@ -825,7 +825,7 @@ function addStatForPlayer(checkbox) {
                                             <div>
                                                 <x-input-label for="stats[{{ $index }}][plus_minus]" :value="__('Plus-Minus')" />
                                                 <x-text-input id="stats[{{ $index }}][plus_minus]" name="stats[{{ $index }}][plus_minus]"
-                                                    type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->plus_minus }}" />
+                                                    type="text" inputmode="numeric" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->plus_minus }}" />
                                             </div>
 
                                         </div>
