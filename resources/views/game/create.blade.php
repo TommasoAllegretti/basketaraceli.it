@@ -39,6 +39,19 @@
         this.value = Math.round(this.value);
     }
 
+    function fixTotalScore() {
+        if (!this.value) {
+            return;
+        }
+        this.value = Math.round(this.value);
+
+        if (this.value < 0) {
+            this.value = 0;
+        } else if (this.value > 999) {
+            this.value = 999;
+        }
+    }
+
     function fixPercentage() {
         if (!this.value) {
             return;
@@ -80,8 +93,21 @@
 
     function updateTeamTotalScore(home) {
         const totalScoreInput = document.getElementById(home ? 'home_team_total_score' : 'away_team_total_score');
-        const mockTotalScoreInput = document.getElementById(home ? 'mock_home_team_total_score' : 'mock_away_team_total_score');
-        const quarterScores = Array.from(document.querySelectorAll(home ? 'input[name^="home_team_quarters"]' : 'input[name^="away_team_quarters"]'));
+        const quarterScores = Array.from(document.querySelectorAll(home ? 'input[name^="home_team_quarters_score"]' : 'input[name^="away_team_quarters_score"]'));
+
+        console.log(quarterScores);
+
+        if (!this.value) {
+            return;
+        }
+        this.value = Math.round(this.value);
+
+        if (this.value < 0) {
+            this.value = 0;
+        } else if (this.value > 99) {
+            this.value = 99;
+        }
+
         const totalScore = quarterScores.reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
         totalScoreInput.value = totalScore;
         mockTotalScoreInput.value = totalScore;
@@ -512,71 +538,37 @@
                             <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                 {{ __('Risultato della partita') }}
                             </h3>
-                            <div class="mt-4">
-                                <label class="flex items-center space-x-2">
-                                    <input type="radio" name="score_input_type" value="total" checked
-                                        onchange="toggleScoreInput('total')">
-                                    <span>{{ __('Inserisci punteggio totale') }}</span>
-                                </label>
-                                <label class="flex items-center space-x-2 mt-2">
-                                    <input type="radio" name="score_input_type" value="quarters"
-                                        onchange="toggleScoreInput('quarters')">
-                                    <span>{{ __('Inserisci punteggio per quarti') }}</span>
-                                </label>
-                            </div>
-
-                            <!-- Total Score Input -->
-                            <div id="totalScoreInput" class="mt-4">
-                                <div class="flex items-center gap-4">
-                                    <div>
-                                        <x-input-label for="home_team_total_score" :value="__('Punteggio totale Locali')" />
-                                        <x-text-input id="home_team_total_score" name="home_team_total_score"
-                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="away_team_total_score" :value="__('Punteggio totale Ospiti')" />
-                                        <x-text-input id="away_team_total_score" name="away_team_total_score"
-                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Quarter Scores Input -->
-                            <div id="quarterScoresInput" class="mt-4 hidden space-y-6">
-                                @for ($i = 1; $i <= 4; $i++)
+                            <div id="quarterScoresInput" class="mt-4 space-y-6">
+                                @for ($i = 0; $i < 4; $i++)
                                     <div class="flex items-center gap-4">
                                         <div>
-                                            <x-input-label for="home_team_quarter_{{ $i }}"
-                                                value="Punteggio Locali Q{{ $i }}" />
-                                            <x-text-input id="home_team_quarter_{{ $i }}"
-                                                name="home_team_quarters[{{ $i }}]" type="number" min="0"
-                                                class="mt-1 block w-full" oninput="updateTeamTotalScore(true)"
-                                                autocomplete="off" />
+                                            <x-input-label for="home_team_quarters_score_{{ $i }}" :value="__('Punteggio Locali Q' . ($i + 1))" />
+                                            <x-text-input id="home_team_quarters_score_{{ $i }}"
+                                                name="home_team_quarters_score[{{ $i }}]" type="number" min="0"
+                                                class="mt-1 block w-full" oninput="updateTeamTotalScore.call(this, true)"
+                                                value="{{ old('home_team_quarters_score.' . $i, $game->home_team_quarters_score[$i] ?? '') }}" />
                                         </div>
                                         <div>
-                                            <x-input-label for="away_team_quarter_{{ $i }}"
-                                                value="Punteggio Ospiti Q{{ $i }}" />
-                                            <x-text-input id="away_team_quarter_{{ $i }}"
-                                                name="away_team_quarters[{{ $i }}]" type="number" min="0"
-                                                class="mt-1 block w-full" oninput="updateTeamTotalScore(false)"
-                                                autocomplete="off" />
+                                            <x-input-label for="away_team_quarters_score_{{ $i }}" :value="__('Punteggio Ospiti Q' . ($i + 1))" />
+                                            <x-text-input id="away_team_quarters_score_{{ $i }}"
+                                                name="away_team_quarters_score[{{ $i }}]" type="number" min="0"
+                                                class="mt-1 block w-full" oninput="updateTeamTotalScore.call(this, false)"
+                                                value="{{ old('away_team_quarters_score.' . $i, $game->away_team_quarters_score[$i] ?? '') }}" />
                                         </div>
                                     </div>
                                 @endfor
                                 <div class="flex items-center gap-4">
                                     <div>
-                                        <x-input-label for="mock_home_team_total_score"
-                                            value="Punteggio totale Locali" />
-                                        <x-text-input id="mock_home_team_total_score" name="mock_home_team_total_score"
-                                            type="number" min="0" class="mt-1 block w-full" readonly
-                                            autocomplete="off" />
+                                        <x-input-label for="home_team_total_score" value="Punteggio totale Locali" />
+                                        <x-text-input id="home_team_total_score" name="home_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
                                     </div>
                                     <div>
-                                        <x-input-label for="mock_away_team_total_score"
-                                            value="Punteggio totale Ospiti" />
-                                        <x-text-input id="mock_away_team_total_score" name="mock_away_team_total_score"
-                                            type="number" min="0" class="mt-1 block w-full" readonly
-                                            autocomplete="off" />
+                                        <x-input-label for="away_team_total_score" value="Punteggio totale Ospiti" />
+                                        <x-text-input id="away_team_total_score" name="away_team_total_score"
+                                            type="number" min="0" class="mt-1 block w-full" autocomplete="off" />
                                     </div>
                                 </div>
                             </div>
@@ -594,3 +586,23 @@
     </div>
     </div>
 </x-app-layout>
+
+@php
+
+    function getQuarterScoreName(int $index)
+    {
+        switch ($index) {
+            case 1:
+                return 'first';
+            case 2:
+                return 'second';
+            case 3:
+                return 'third';
+            case 4:
+                return 'fourth';
+            default:
+                return 'unknown';
+        }
+    }
+
+@endphp
