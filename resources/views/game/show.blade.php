@@ -64,7 +64,7 @@
 
                     <h2 class="font-semibold">Generale</h2>
 
-                    <p>Data: <span class="font-bold">{{ $game->date }}</span></p>
+                    <p>Data: <span class="font-bold">{{ \Carbon\Carbon::parse(time: $game->date)->format('d/m/Y') }}</span></p>
 
 
                     <div

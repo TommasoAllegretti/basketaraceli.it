@@ -31,7 +31,9 @@
                     <p>Altezza (cm): <span class="font-bold dark:text-gray-100">{{ $player->height_cm }}</span></p>
 
 
-                    <p>Data di nascita: <span class="font-bold dark:text-gray-100">{{ $player->birth_date }}</span></p>
+                    <p>Data di nascita: <span
+                            class="font-bold dark:text-gray-100">{{ \Carbon\Carbon::parse(time: $player->birthdate)->format('d/m/Y') }}</span>
+                    </p>
 
                     <p>Punti a partita: <span class="font-bold dark:text-gray-100">{{ $player->points_per_game }}</span>
                     </p>

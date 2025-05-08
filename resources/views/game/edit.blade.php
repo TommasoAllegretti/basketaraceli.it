@@ -26,20 +26,12 @@ function roundDecimal() {
     if (!this.value) {
         return;
     }
-    this.value = Math.round(this.value);
-}
-
-function fixTotalScore() {
-    if (!this.value) {
-        return;
-    }
-    this.value = Math.round(this.value);
 
     if (this.value < 0) {
         this.value = 0;
-    } else if (this.value > 999) {
-        this.value = 999;
     }
+
+    this.value = Math.round(this.value);
 }
 
 function fixPercentage() {
@@ -417,6 +409,16 @@ function addStatForPlayer(checkbox) {
 
 </script>
 
+<style>
+    .toggle-checkbox:checked + div .toggle-span::before {
+    content: "-";
+}
+
+.toggle-checkbox:not(:checked) + div .toggle-span::before {
+    content: "+";
+}
+</style>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -440,7 +442,7 @@ function addStatForPlayer(checkbox) {
                         <!-- Game Date -->
                         <div>
                             <x-input-label for="date" :value="__('Data (obbligatorio)')" />
-                            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full"
+                            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full dark:[color-scheme:dark]"
                                 value="{{ $game->date }}" autocomplete="off" required />
                         </div>
 
@@ -595,7 +597,7 @@ function addStatForPlayer(checkbox) {
                                     <button onclick="toggleAccordion(event, {{ $index }})"
                                         class="w-full flex justify-between items-center p-6 text-slate-800">
                                         <span class="dark:text-gray-300">Statistiche <b>{{ $stat->player->name }}</b></span>
-                                        <span id="icon-1" class="text-slate-800 transition-transform duration-300 dark:text-gray-300">
+                                        <span id="icon-{{$index}}" class="text-slate-800 transition-transform duration-300 dark:text-gray-300">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                                 class="w-4 h-4">
                                                 <path fill-rule="evenodd"
@@ -809,23 +811,57 @@ function addStatForPlayer(checkbox) {
                                             <div>
                                                 <x-input-label for="stats[{{ $index }}][performance_index_rating]"
                                                     :value="__('Performance Index Rating')" />
+                                                <label class="relative">
+                                                    <input type="checkbox" name="stats[{{ $index }}][performance_index_rating_sign]" class="hidden toggle-checkbox"
+                                                        {{ $stat->performance_index_rating < 0 ? 'checked' : '' }} />
+                                                    <div class="flex items-center ">
+                                                        <div
+                                                        class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                                                    >
+                                                        <span class="text-xl font-semibold select-none toggle-span"></span>
+                                                    </div>
+                                                </label>
                                                 <x-text-input id="stats[{{ $index }}][performance_index_rating]"
-                                                    name="stats[{{ $index }}][performance_index_rating]" type="number"
-                                                    class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->performance_index_rating }}" />
+                                                    name="stats[{{ $index }}][performance_index_rating]" type="number" min="0"
+                                                    class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" value="{{abs($stat->performance_index_rating)}}" />
+                                                </div>
                                             </div>
-
-
+                        
+                        
                                             <div>
                                                 <x-input-label for="stats[{{ $index }}][efficiency]" :value="__('Efficenza')" />
+                                                <label class="relative">
+                                                    <input type="checkbox" name="stats[{{ $index }}][efficiency_sign]" class="hidden toggle-checkbox" 
+                                                        {{ $stat->efficiency < 0 ? 'checked' : '' }} />
+                                                    <div class="flex items-center">
+                                                        <div
+                                                        class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                                                    >
+                                                        <span class="text-xl font-semibold select-none toggle-span"></span>
+                                                    </div>
+                                                </label>
                                                 <x-text-input id="stats[{{ $index }}][efficiency]" name="stats[{{ $index }}][efficiency]"
-                                                    type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->efficiency }}" />
+                                                    type="number" min="0" class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" value="{{abs($stat->efficiency)}}" />
+                                                </div>
                                             </div>
 
 
                                             <div>
                                                 <x-input-label for="stats[{{ $index }}][plus_minus]" :value="__('Plus-Minus')" />
+                                                <label class="relative">
+                                                    <input type="checkbox" name="stats[{{ $index }}][plus_minus_sign]" class="hidden toggle-checkbox" 
+                                                        {{ $stat->plus_minus < 0 ? 'checked' : '' }} />
+                                                    <div class="flex items-center">
+                                                        <div
+                                                        class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                                                    >
+                                                        <span class="text-xl font-semibold select-none toggle-span"></span>
+                                                    </div>
+                                                </label>
                                                 <x-text-input id="stats[{{ $index }}][plus_minus]" name="stats[{{ $index }}][plus_minus]"
-                                                    type="text" inputmode="numeric" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->plus_minus }}" />
+                                                type="number" min="0" class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" value="{{abs($stat->plus_minus)}}" />
+                                                    
+                                                </div>
                                             </div>
 
                                         </div>

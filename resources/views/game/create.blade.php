@@ -36,6 +36,11 @@
         if (!this.value) {
             return;
         }
+
+        if (this.value < 0) {
+            this.value = 0;
+        }
+
         this.value = Math.round(this.value);
     }
 
@@ -344,23 +349,53 @@
                     <div>
                         <x-input-label for="stats[${newStatIndex}][performance_index_rating]"
                             :value="__('Performance Index Rating')" />
+                        <label class="relative">
+                            <input type="checkbox" name="stats[${newStatIndex}][performance_index_rating_sign]" class="hidden toggle-checkbox" />
+                            <div class="flex items-center ">
+                                <div
+                                class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                            >
+                                <span class="text-xl font-semibold select-none toggle-span"></span>
+                            </div>
+                        </label>
                         <x-text-input id="stats[${newStatIndex}][performance_index_rating]"
-                            name="stats[${newStatIndex}][performance_index_rating]" type="number"
-                            class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
+                            name="stats[${newStatIndex}][performance_index_rating]" type="number" min="0"
+                            class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" />
+                        </div>
                     </div>
 
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][efficiency]" :value="__('Efficenza')" />
+                        <label class="relative">
+                            <input type="checkbox" name="stats[${newStatIndex}][efficiency_sign]" class="hidden toggle-checkbox" />
+                            <div class="flex items-center">
+                                <div
+                                class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                            >
+                                <span class="text-xl font-semibold select-none toggle-span"></span>
+                            </div>
+                        </label>
                         <x-text-input id="stats[${newStatIndex}][efficiency]" name="stats[${newStatIndex}][efficiency]"
-                            type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
+                            type="number" min="0" class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" />
+                        </div>
                     </div>
-
 
                     <div>
                         <x-input-label for="stats[${newStatIndex}][plus_minus]" :value="__('Plus-Minus')" />
-                        <x-text-input id="stats[${newStatIndex}][plus_minus]" name="stats[${newStatIndex}][plus_minus]"
-                            type="number" class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
+                        <label class="relative">
+                            <input type="checkbox" name="stats[${newStatIndex}][plus_minus_sign]" class="hidden toggle-checkbox" />
+                            <div class="flex items-center">
+                                <div
+                                class="w-10 h-10 flex mt-1 items-center justify-center border rounded-l-md cursor-pointer border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 active:border-indigo-500 dark:active:border-indigo-600 focus:ring-indigo-500 dark:active:ring-indigo-600 shadow-sm"
+                            >
+                                <span class="text-xl font-semibold select-none toggle-span"></span>
+                            </div>
+                        </label>
+                            <x-text-input id="stats[${newStatIndex}][plus_minus]" name="stats[${newStatIndex}][plus_minus]"
+                            type="number" min="0" class="mt-1 block w-full !rounded-l-none" oninput="roundDecimal.call(this)" autocomplete="off" />
+                            
+                        </div>
                     </div>
 
                 </div>
@@ -469,6 +504,16 @@
 
 </script>
 
+<style>
+    .toggle-checkbox:checked+div .toggle-span::before {
+        content: "-";
+    }
+
+    .toggle-checkbox:not(:checked)+div .toggle-span::before {
+        content: "+";
+    }
+</style>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -490,8 +535,8 @@
 
                         <div>
                             <x-input-label for="date" :value="__('Data (obbligatorio)')" />
-                            <x-text-input id="date" name="date" type="date" class="mt-1 block w-full" autocomplete="off"
-                                required />
+                            <x-text-input id="date" name="date" type="date"
+                                class="mt-1 block w-full dark:[color-scheme:dark]" autocomplete="off" required />
                         </div>
 
                         <div>

@@ -73,8 +73,11 @@ class GameController extends Controller
             'stats.*.blocks' => 'nullable|integer|min:0',
             'stats.*.personal_fouls' => 'nullable|integer|min:0',
             'stats.*.performance_index_rating' => 'nullable|integer',
+            'stats.*.performance_index_rating_sign' => 'nullable',
             'stats.*.efficiency' => 'nullable|integer',
+            'stats.*.efficiency_sign' => 'nullable',
             'stats.*.plus_minus' => 'nullable|integer',
+            'stats.*.plus_minus_sign' => 'nullable',
         ]);
 
         $validated['home_team_first_quarter_score'] = $validated['home_team_quarters_score'][0] ?? null;
@@ -108,6 +111,18 @@ class GameController extends Controller
 
                 if ($stat['minutes_played'] != null) {
                     $stat['seconds_played'] += $stat['minutes_played'] * 60;
+                }
+
+                if (array_key_exists('performance_index_rating_sign', $stat)) {
+                    $stat['performance_index_rating'] = -abs($stat['performance_index_rating'] ?? 0);
+                }
+
+                if (array_key_exists('efficiency_sign', $stat)) {
+                    $stat['efficiency'] = -abs($stat['efficiency'] ?? 0);
+                }
+
+                if (array_key_exists('plus_minus_sign', $stat)) {
+                    $stat['plus_minus'] = -abs($stat['plus_minus'] ?? 0);
                 }
 
                 $game->stats()->create($stat);
@@ -200,8 +215,11 @@ class GameController extends Controller
             'stats.*.blocks' => 'nullable|integer|min:0',
             'stats.*.personal_fouls' => 'nullable|integer|min:0',
             'stats.*.performance_index_rating' => 'nullable|integer',
+            'stats.*.performance_index_rating_sign' => 'nullable',
             'stats.*.efficiency' => 'nullable|numeric',
+            'stats.*.efficiency_sign' => 'nullable',
             'stats.*.plus_minus' => 'nullable|integer',
+            'stats.*.plus_minus_sign' => 'nullable',
         ]);
 
         // Transform quarter scores into individual fields
@@ -237,6 +255,18 @@ class GameController extends Controller
             foreach ($validated['stats'] as $stat) {
                 // Check if the stat record exists
                 $existingStat = $game->stats()->where('player_id', $stat['player_id'])->first();
+
+                if (array_key_exists('performance_index_rating_sign', $stat)) {
+                    $stat['performance_index_rating'] = -abs($stat['performance_index_rating'] ?? 0);
+                }
+
+                if (array_key_exists('efficiency_sign', $stat)) {
+                    $stat['efficiency'] = -abs($stat['efficiency'] ?? 0);
+                }
+
+                if (array_key_exists('plus_minus_sign', $stat)) {
+                    $stat['plus_minus'] = -abs($stat['plus_minus'] ?? 0);
+                }
 
                 if ($existingStat) {
                     // Update the existing stat record
