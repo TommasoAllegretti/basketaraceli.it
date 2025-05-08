@@ -627,14 +627,14 @@ function addStatForPlayer(checkbox) {
                                                 <div class="flex items-center gap-2">
                                                     <div>
                                                         <x-text-input id="stats[{{ $index }}][minutes_played]" name="stats[{{ $index }}][minutes_played]"
-                                                            type="number" min="0" oninput="fixMinutes.call(this)" class="mt-1 block w-full" autocomplete="off" value="" />
+                                                            type="number" min="0" oninput="fixMinutes.call(this)" class="mt-1 block w-full" autocomplete="off" value="{{ intdiv($stat->seconds_played, 60) }}" />
                                                     </div>
 
                                                     <span>:</span>
 
                                                     <div>
                                                         <x-text-input id="stats[{{ $index }}][seconds_played]" name="stats[{{ $index }}][seconds_played]"
-                                                            type="number" min="0" class="mt-1 block w-full" oninput="fixSeconds.call(this)" autocomplete="off" />
+                                                            type="number" min="0" class="mt-1 block w-full" oninput="fixSeconds.call(this)" autocomplete="off" value="{{ $stat->seconds_played % 60 }}" />
                                                     </div>
                                                     
                                                 </div>

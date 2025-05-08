@@ -256,6 +256,10 @@ class GameController extends Controller
                 // Check if the stat record exists
                 $existingStat = $game->stats()->where('player_id', $stat['player_id'])->first();
 
+                if ($stat['minutes_played'] != null) {
+                    $stat['seconds_played'] += $stat['minutes_played'] * 60;
+                }
+
                 if (array_key_exists('performance_index_rating_sign', $stat)) {
                     $stat['performance_index_rating'] = -abs($stat['performance_index_rating'] ?? 0);
                 }
