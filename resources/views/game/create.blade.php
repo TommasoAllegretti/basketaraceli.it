@@ -554,7 +554,7 @@
                         </div>
 
                         <div id="homeTeamDetails" class="mt-4 hidden">
-                            <h3 class="text-gray-700 dark:text-gray-300">Players:</h3>
+                            <h3 class="text-gray-700 dark:text-gray-300">Convocati:</h3>
                             <ul id="homeTeamPlayersList" class="list-disc list-inside text-gray-700 dark:text-gray-300">
                             </ul>
                         </div>
@@ -574,7 +574,7 @@
                         </div>
 
                         <div id="awayTeamDetails" class="mt-4 hidden">
-                            <h3 class="text-gray-700 dark:text-gray-300">Players:</h3>
+                            <h3 class="text-gray-700 dark:text-gray-300">Convocati:</h3>
                             <ul id="awayTeamPlayersList" class="list-disc list-inside text-gray-700 dark:text-gray-300">
                             </ul>
                         </div>
