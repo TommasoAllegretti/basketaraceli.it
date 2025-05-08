@@ -29,19 +29,19 @@
 </script>
 
 <style>
-    thead th {
+    .sticky-table thead th {
         position: sticky;
         top: 0;
         z-index: 2;
     }
 
-    tbody td:first-child {
+    .sticky-table tbody td:first-child {
         position: sticky;
         left: 0;
         z-index: 1;
     }
 
-    thead th:first-child {
+    .sticky-table thead th:first-child {
         z-index: 3;
         left: 0;
     }
@@ -62,10 +62,80 @@
 
                 <div class="p-6 space-y-6 w-full">
 
-                    <h2 class="font-semibold">Generale</h2>
+                    <h2 class="text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Generale
+                    </h2>
 
                     <p>Data: <span class="font-bold">{{ \Carbon\Carbon::parse(time: $game->date)->format('d/m/Y') }}</span></p>
 
+                    
+
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="bg-gray-50 dark:bg-gray-700 px-6 py-3">Punti
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">Q1</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Q2</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Q3</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Q4</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Totale</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 border-gray-200 last:border-b-0">
+                                    <td scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-400 bg-white dark:bg-gray-900">
+                                        {{ $game->home_team->name }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->home_team_first_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->home_team_second_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->home_team_third_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->home_team_fourth_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->home_team_total_score ?? '-' }}
+                                    </td>
+                                </tr>
+                                <tr
+                                    class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 border-gray-200 last:border-b-0">
+                                    <td scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-400 bg-white dark:bg-gray-900">
+                                        {{ $game->away_team->name }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->away_team_first_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->away_team_second_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->away_team_third_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->away_team_fourth_quarter_score ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $game->away_team_total_score ?? '-' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 class="text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Statistiche giocatori
+                    </h2>
 
                     <div
                         class="bg-white dark:bg-gray-800 shadow-lg rounded-xl w-full p-4 border border-gray-200 dark:border-gray-700">
@@ -90,37 +160,37 @@
                         @foreach ($teams as $index => $team)
                             <div id="tab{{ $index + 1 }}Content" class="tab-content p-4 {{ $index === 0 ? '' : 'hidden' }}">
                                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <table class="sticky-table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                         <thead
                                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
                                                 <th scope="col" class="bg-gray-50 dark:bg-gray-700 px-6 py-3">Giocatore
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">MIN</th>
-                                                <th scope="col" class="px-6 py-3">PTS</th>
-                                                <th scope="col" class="px-6 py-3">FGM</th>
-                                                <th scope="col" class="px-6 py-3">FGA</th>
-                                                <th scope="col" class="px-6 py-3">FG%</th>
-                                                <th scope="col" class="px-6 py-3">3PM</th>
-                                                <th scope="col" class="px-6 py-3">3PA</th>
-                                                <th scope="col" class="px-6 py-3">3P%</th>
-                                                <th scope="col" class="px-6 py-3">2PM</th>
-                                                <th scope="col" class="px-6 py-3">2PA</th>
-                                                <th scope="col" class="px-6 py-3">2P%</th>
-                                                <th scope="col" class="px-6 py-3">FTM</th>
-                                                <th scope="col" class="px-6 py-3">FTA</th>
-                                                <th scope="col" class="px-6 py-3">FT%</th>
-                                                <th scope="col" class="px-6 py-3">OREB</th>
-                                                <th scope="col" class="px-6 py-3">DREB</th>
-                                                <th scope="col" class="px-6 py-3">REB</th>
-                                                <th scope="col" class="px-6 py-3">AST</th>
-                                                <th scope="col" class="px-6 py-3">TOV</th>
-                                                <th scope="col" class="px-6 py-3">STL</th>
-                                                <th scope="col" class="px-6 py-3">BLK</th>
-                                                <th scope="col" class="px-6 py-3">PF</th>
-                                                <th scope="col" class="px-6 py-3">PIR</th>
-                                                <th scope="col" class="px-6 py-3">EFF</th>
-                                                <th scope="col" class="px-6 py-3">+/-</th>
+                                                <th scope="col" class="px-6 py-3 text-center">MIN</th>
+                                                <th scope="col" class="px-6 py-3 text-center">PTS</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FGM</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FGA</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FG%</th>
+                                                <th scope="col" class="px-6 py-3 text-center">3PM</th>
+                                                <th scope="col" class="px-6 py-3 text-center">3PA</th>
+                                                <th scope="col" class="px-6 py-3 text-center">3P%</th>
+                                                <th scope="col" class="px-6 py-3 text-center">2PM</th>
+                                                <th scope="col" class="px-6 py-3 text-center">2PA</th>
+                                                <th scope="col" class="px-6 py-3 text-center">2P%</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FTM</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FTA</th>
+                                                <th scope="col" class="px-6 py-3 text-center">FT%</th>
+                                                <th scope="col" class="px-6 py-3 text-center">OREB</th>
+                                                <th scope="col" class="px-6 py-3 text-center">DREB</th>
+                                                <th scope="col" class="px-6 py-3 text-center">REB</th>
+                                                <th scope="col" class="px-6 py-3 text-center">AST</th>
+                                                <th scope="col" class="px-6 py-3 text-center">TOV</th>
+                                                <th scope="col" class="px-6 py-3 text-center">STL</th>
+                                                <th scope="col" class="px-6 py-3 text-center">BLK</th>
+                                                <th scope="col" class="px-6 py-3 text-center">PF</th>
+                                                <th scope="col" class="px-6 py-3 text-center">PIR</th>
+                                                <th scope="col" class="px-6 py-3 text-center">EFF</th>
+                                                <th scope="col" class="px-6 py-3 text-center">+/-</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,53 +201,53 @@
                                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-400 bg-white dark:bg-gray-900">
                                                         {{ $player_stats->player->name }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ formatSecondsToMinutes($player_stats->seconds_played) }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->points ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->field_goals_made ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->field_goals_attempted ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->points ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->field_goals_made ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->field_goals_attempted ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->field_goal_percentage ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->field_goal_percentage ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->three_point_field_goals_made ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->three_point_field_goals_attempted ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->three_point_field_goal_percentage ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->two_point_field_goals_made ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->two_point_field_goals_attempted ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->two_point_field_goal_percentage ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->free_throws_made ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->free_throws_attempted ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->free_throws_made ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->free_throws_attempted ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->free_throw_percentage ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->free_throw_percentage ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->offensive_rebounds ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->offensive_rebounds ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->defensive_rebounds ?? '-' }}
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->defensive_rebounds ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->total_rebounds ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->assists ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->turnovers ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->steals ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->blocks ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->personal_fouls ?? '-' }}</td>
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->total_rebounds ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->assists ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->turnovers ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->steals ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->blocks ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->personal_fouls ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">
                                                         {{ $player_stats->performance_index_rating ?? '-' }}
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $player_stats->efficiency ?? '-' }}</td>
-                                                    <td class="px-6 py-4">{{ $player_stats->plus_minus ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->efficiency ?? '-' }}</td>
+                                                    <td class="px-6 py-4 text-center">{{ $player_stats->plus_minus ?? '-' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
