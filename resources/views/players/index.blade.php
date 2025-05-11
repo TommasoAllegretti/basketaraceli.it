@@ -90,7 +90,7 @@
                                             {{ $player->assists_per_game ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('players.destroy', $player->id) }}" method="POST"
+                                            <form action="{{ route('players.destroy', $player->id) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare questo giocatore?');"
                                                 class="space-x-2">
 
 

@@ -145,7 +145,7 @@
                                 {{ $game->home_team->name }}
                             </button>
                             <button id="tab2Btn" onclick="activateTab(2)"
-                                class="tab-btn flex-1 py-2 text-center font-medium border-b-2 border-transparent">
+                                class="tab-btn flex-1 py-2 text-center font-medium border-b-4 border-transparent">
                                 {{ $game->away_team->name }}
                             </button>
                         </div>

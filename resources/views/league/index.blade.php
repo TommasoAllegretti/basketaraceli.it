@@ -45,7 +45,7 @@
                                             {{ $league->name }}
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('leagues.destroy', $league->id) }}" method="POST"
+                                            <form action="{{ route('leagues.destroy', $league->id) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare questa categoria?');"
                                                 class="space-x-2">
 
 

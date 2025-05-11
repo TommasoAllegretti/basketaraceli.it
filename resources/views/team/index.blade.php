@@ -53,7 +53,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('teams.destroy', $team->id) }}" method="POST"
+                                            <form action="{{ route('teams.destroy', $team->id) }}" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare questa squadra?');"
                                                 class="space-x-2">
 
 
