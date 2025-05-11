@@ -152,8 +152,8 @@
 
                         @php
                             $teams = [
-                                ['stats' => $home_team_stats, 'name' => $game->home_team->name],
-                                ['stats' => $away_team_stats, 'name' => $game->away_team->name],
+                                ['stats' => $home_team_stats, 'name' => $game->home_team->name, 'team_stats' => $game->home_team_game_stats],
+                                ['stats' => $away_team_stats, 'name' => $game->away_team->name, 'team_stats' => $game->away_team_game_stats],
                             ];
                         @endphp
 
@@ -249,6 +249,61 @@
                                                     <td class="px-6 py-4 text-center">{{ $player_stats->efficiency ?? '-' }}</td>
                                                     <td class="px-6 py-4 text-center">{{ $player_stats->plus_minus ?? '-' }}</td>
                                                 </tr>
+                                            @endforeach
+                                            @foreach ($team['team_stats'] as $index => $player_stats)
+                                                @if ($index === 0)
+                                                    <tr
+                                                        class="bg-white border-t dark:bg-gray-900 dark:border-gray-700 border-gray-200 text-black dark:text-white font-semibold">
+                                                        <td scope="row"
+                                                            class="px-6 py-4 font-medium whitespace-nowrap bg-white dark:bg-gray-900">
+                                                            Totale
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">-</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->points ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->field_goals_made ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->field_goals_attempted ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->field_goal_percentage ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->three_point_field_goals_made ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->three_point_field_goals_attempted ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->three_point_field_goal_percentage ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->two_point_field_goals_made ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->two_point_field_goals_attempted ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->two_point_field_goal_percentage ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->free_throws_made ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->free_throws_attempted ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->free_throw_percentage ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->offensive_rebounds ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->defensive_rebounds ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->total_rebounds ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->assists ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->turnovers ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->steals ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->blocks ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->personal_fouls ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">
+                                                            {{ $player_stats->performance_index_rating ?? '-' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-center">{{ $player_stats->efficiency ?? '-' }}</td>
+                                                        <td class="px-6 py-4 text-center">-</td>
+                                                @endif
                                             @endforeach
                                         </tbody>
                                     </table>

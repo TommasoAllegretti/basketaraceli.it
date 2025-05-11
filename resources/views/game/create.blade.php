@@ -1,4 +1,10 @@
 <script>
+    
+    document.addEventListener("wheel", function(event){
+        if(document.activeElement.type === "number"){
+            document.activeElement.blur();
+        }
+    });
 
 
     function toggleAccordion(event, index) {
@@ -203,14 +209,6 @@
 
 
                     <div>
-                        <x-input-label for="stats[${newStatIndex}][field_goal_percentage]" :value="__('Percentuale di tiro')" />
-                        <x-text-input id="stats[${newStatIndex}][field_goal_percentage]"
-                            name="stats[${newStatIndex}][field_goal_percentage]" type="number" min="0" step="0.01"
-                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
-                    </div>
-
-
-                    <div>
                         <x-input-label for="stats[${newStatIndex}][three_point_field_goals_made]"
                             :value="__('Tiri da 3 segnati')" />
                         <x-text-input id="stats[${newStatIndex}][three_point_field_goals_made]"
@@ -225,15 +223,6 @@
                         <x-text-input id="stats[${newStatIndex}][three_point_field_goals_attempted]"
                             name="stats[${newStatIndex}][three_point_field_goals_attempted]" type="number" min="0"
                             class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
-                    </div>
-
-
-                    <div>
-                        <x-input-label for="stats[${newStatIndex}][three_point_field_goal_percentage]"
-                            :value="__('Percentuale tiro da 3')" />
-                        <x-text-input id="stats[${newStatIndex}][three_point_field_goal_percentage]"
-                            name="stats[${newStatIndex}][three_point_field_goal_percentage]" type="number" min="0"
-                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 
@@ -256,15 +245,6 @@
 
 
                     <div>
-                        <x-input-label for="stats[${newStatIndex}][two_point_field_goal_percentage]"
-                            :value="__('Percentuale tiro da 2')" />
-                        <x-text-input id="stats[${newStatIndex}][two_point_field_goal_percentage]"
-                            name="stats[${newStatIndex}][two_point_field_goal_percentage]" type="number" min="0"
-                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
-                    </div>
-
-
-                    <div>
                         <x-input-label for="stats[${newStatIndex}][free_throws_made]" :value="__('Tiri liberi segnati')" />
                         <x-text-input id="stats[${newStatIndex}][free_throws_made]"
                             name="stats[${newStatIndex}][free_throws_made]" type="number" min="0"
@@ -277,14 +257,6 @@
                         <x-text-input id="stats[${newStatIndex}][free_throws_attempted]"
                             name="stats[${newStatIndex}][free_throws_attempted]" type="number" min="0"
                             class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
-                    </div>
-
-
-                    <div>
-                        <x-input-label for="stats[${newStatIndex}][free_throw_percentage]" :value="__('Percentuale tiro libero')" />
-                        <x-text-input id="stats[${newStatIndex}][free_throw_percentage]"
-                            name="stats[${newStatIndex}][free_throw_percentage]" type="number" min="0"
-                            class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                     </div>
 
 

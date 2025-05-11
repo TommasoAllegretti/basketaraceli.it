@@ -54,16 +54,12 @@ class GameController extends Controller
             'stats.*.points' => 'nullable|integer|min:0',
             'stats.*.field_goals_made' => 'nullable|integer|min:0',
             'stats.*.field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.two_point_field_goals_made' => 'nullable|integer|min:0',
             'stats.*.two_point_field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.two_point_field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.three_point_field_goals_made' => 'nullable|integer|min:0',
             'stats.*.three_point_field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.three_point_field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.free_throws_made' => 'nullable|integer|min:0',
             'stats.*.free_throws_attempted' => 'nullable|integer|min:0',
-            'stats.*.free_throw_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.offensive_rebounds' => 'nullable|integer|min:0',
             'stats.*.defensive_rebounds' => 'nullable|integer|min:0',
             'stats.*.total_rebounds' => 'nullable|integer|min:0',
@@ -113,6 +109,28 @@ class GameController extends Controller
                     $stat['seconds_played'] += $stat['minutes_played'] * 60;
                 }
 
+                if (array_key_exists('field_goals_attempted', $stat) && $stat['field_goals_attempted'] == 0) {
+                    $stat['field_goal_percentage'] = null;
+                } else {
+                    $stat['field_goal_percentage'] = ($stat['field_goals_made'] ?? 0) / ($stat['field_goals_attempted'] ?? 1) * 100;
+                }
+                if (array_key_exists('two_point_field_goals_attempted', $stat) && $stat['two_point_field_goals_attempted'] == 0) {
+                    $stat['two_point_field_goal_percentage'] = null;
+                } else {
+                    $stat['two_point_field_goal_percentage'] = ($stat['two_point_field_goals_made'] ?? 0) / ($stat['two_point_field_goals_attempted'] ?? 1) * 100;
+                }
+                if (array_key_exists('three_point_field_goals_attempted', $stat) && $stat['three_point_field_goals_attempted'] == 0) {
+                    $stat['three_point_field_goal_percentage'] = null;
+                } else {
+                    $stat['three_point_field_goal_percentage'] = ($stat['three_point_field_goals_made'] ?? 0) / ($stat['three_point_field_goals_attempted'] ?? 1) * 100;
+                }
+                if (array_key_exists('free_throws_attempted', $stat) && $stat['free_throws_attempted'] == 0) {
+                    $stat['free_throw_percentage'] = null;
+                } else {
+                    $stat['free_throw_percentage'] = ($stat['free_throws_made'] ?? 0) / ($stat['free_throws_attempted'] ?? 1) * 100;
+                }
+
+
                 if (array_key_exists('performance_index_rating_sign', $stat)) {
                     $stat['performance_index_rating'] = -abs($stat['performance_index_rating'] ?? 0);
                 }
@@ -128,6 +146,115 @@ class GameController extends Controller
                 $game->stats()->create($stat);
             }
         }
+
+        
+        // Calculate and create GameStat for home team
+        $homeTeamStats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($game) {
+                $query->where('teams.id', $game->home_team_id);
+            })
+            ->get()
+            ->reduce(function ($carry, $stat) {
+                foreach ($stat->getAttributes() as $key => $value) {
+
+                    // Skip specific keys
+                    if (in_array($key, ['player_id', 'minutes_played', 'seconds_played', 'plus_minus', 'performance_index_rating_sign', 'efficiency_sign', 'plus_minus_sign'])) {
+                        continue;
+                    }
+
+                    // Handle averaging for specific keys
+                    $keysToAverage = ['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'];
+                    if (in_array($key, $keysToAverage)) {
+                        if ($key === 'field_goal_percentage' && (!isset($stat['field_goals_attempted']) || $stat['field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'two_point_field_goal_percentage' && (!isset($stat['two_point_field_goals_attempted']) || $stat['two_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'three_point_field_goal_percentage' && (!isset($stat['three_point_field_goals_attempted']) || $stat['three_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'free_throw_percentage' && (!isset($stat['free_throws_attempted']) || $stat['free_throws_attempted'] == 0)) {
+                            continue;
+                        }
+
+                        if (!isset($carry[$key])) {
+                            $carry[$key] = ['sum' => 0, 'count' => 0];
+                        }
+                        $carry[$key]['sum'] += $value ?? 0;
+                        $carry[$key]['count'] += 1;
+                        continue;
+                    }
+
+                    if (is_numeric($value)) {
+                        $carry[$key] = ($carry[$key] ?? 0) + $value;
+                    }
+                }
+                return $carry;
+            }, []);
+
+            // Calculate averages for the keys that need averaging
+            foreach (['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'] as $key) {
+                if (isset($homeTeamStats[$key])) {
+                    $homeTeamStats[$key] = $homeTeamStats[$key]['count'] > 0
+                        ? $homeTeamStats[$key]['sum'] / $homeTeamStats[$key]['count']
+                        : null;
+                }
+            }
+
+        $game->home_team_game_stats()->create(array_merge($homeTeamStats, ['team_id' => $game->home_team_id]));
+
+        
+        // Calculate and create GameStat for away team
+        $awayTeamStats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($game) {
+                $query->where('teams.id', $game->away_team_id);
+            })
+            ->get()
+            ->reduce(function ($carry, $stat) {
+                foreach ($stat->getAttributes() as $key => $value) {
+
+                    // Skip specific keys
+                    if (in_array($key, ['player_id', 'minutes_played', 'seconds_played', 'plus_minus', 'performance_index_rating_sign', 'efficiency_sign', 'plus_minus_sign'])) {
+                        continue;
+                    }
+
+                    // Handle averaging for specific keys
+                    $keysToAverage = ['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'];
+                    if (in_array($key, $keysToAverage)) {
+                        if ($key === 'field_goal_percentage' && (!isset($stat['field_goals_attempted']) || $stat['field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'two_point_field_goal_percentage' && (!isset($stat['two_point_field_goals_attempted']) || $stat['two_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'three_point_field_goal_percentage' && (!isset($stat['three_point_field_goals_attempted']) || $stat['three_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'free_throw_percentage' && (!isset($stat['free_throws_attempted']) || $stat['free_throws_attempted'] == 0)) {
+                            continue;
+                        }
+
+                        if (!isset($carry[$key])) {
+                            $carry[$key] = ['sum' => 0, 'count' => 0];
+                        }
+                        $carry[$key]['sum'] += $value ?? 0;
+                        $carry[$key]['count'] += 1;
+                        continue;
+                    }
+
+                    if (is_numeric($value)) {
+                        $carry[$key] = ($carry[$key] ?? 0) + $value;
+                    }
+                }
+                return $carry;
+            }, []);
+
+            // Calculate averages for the keys that need averaging
+            foreach (['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'] as $key) {
+                if (isset($awayTeamStats[$key])) {
+                    $awayTeamStats[$key] = $awayTeamStats[$key]['count'] > 0
+                        ? $awayTeamStats[$key]['sum'] / $awayTeamStats[$key]['count']
+                        : null;
+                }
+            }
+
+        $game->away_team_game_stats()->create(array_merge($awayTeamStats, ['team_id' => $game->away_team_id]));
+
 
         return redirect()->route('games.index')
 
@@ -196,16 +323,12 @@ class GameController extends Controller
             'stats.*.points' => 'nullable|integer|min:0',
             'stats.*.field_goals_made' => 'nullable|integer|min:0',
             'stats.*.field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.two_point_field_goals_made' => 'nullable|integer|min:0',
             'stats.*.two_point_field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.two_point_field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.three_point_field_goals_made' => 'nullable|integer|min:0',
             'stats.*.three_point_field_goals_attempted' => 'nullable|integer|min:0',
-            'stats.*.three_point_field_goal_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.free_throws_made' => 'nullable|integer|min:0',
             'stats.*.free_throws_attempted' => 'nullable|integer|min:0',
-            'stats.*.free_throw_percentage' => 'nullable|numeric|min:0|max:100',
             'stats.*.offensive_rebounds' => 'nullable|integer|min:0',
             'stats.*.defensive_rebounds' => 'nullable|integer|min:0',
             'stats.*.total_rebounds' => 'nullable|integer|min:0',
@@ -258,7 +381,29 @@ class GameController extends Controller
 
                 if ($stat['minutes_played'] != null) {
                     $stat['seconds_played'] += $stat['minutes_played'] * 60;
+                }                
+
+                if (array_key_exists('field_goals_attempted', $stat) && $stat['field_goals_attempted'] == 0) {
+                    $stat['field_goal_percentage'] = null;
+                } else {
+                    $stat['field_goal_percentage'] = ($stat['field_goals_made'] ?? 0) / ($stat['field_goals_attempted'] ?? 1) * 100;
                 }
+                if (array_key_exists('two_point_field_goals_attempted', $stat) && $stat['two_point_field_goals_attempted'] == 0) {
+                    $stat['two_point_field_goal_percentage'] = null;
+                } else {
+                    $stat['two_point_field_goal_percentage'] = ($stat['two_point_field_goals_made'] ?? 0) / ($stat['two_point_field_goals_attempted'] ?? 1) * 100;
+                }
+                if (array_key_exists('three_point_field_goals_attempted', $stat) && $stat['three_point_field_goals_attempted'] == 0) {
+                    $stat['three_point_field_goal_percentage'] = null;
+                } else {
+                    $stat['three_point_field_goal_percentage'] = ($stat['three_point_field_goals_made'] ?? 0) / ($stat['three_point_field_goals_attempted'] ?? 1) * 100;
+                }
+                if (array_key_exists('free_throws_attempted', $stat) && $stat['free_throws_attempted'] == 0) {
+                    $stat['free_throw_percentage'] = null;
+                } else {
+                    $stat['free_throw_percentage'] = ($stat['free_throws_made'] ?? 0) / ($stat['free_throws_attempted'] ?? 1) * 100;
+                }
+
 
                 if (array_key_exists('performance_index_rating_sign', $stat)) {
                     $stat['performance_index_rating'] = -abs($stat['performance_index_rating'] ?? 0);
@@ -281,6 +426,120 @@ class GameController extends Controller
                 }
             }
         }
+
+        // Recalculate and update GameStat for home team
+        $homeTeamStats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($game) {
+                $query->where('teams.id', $game->home_team_id);
+            })
+            ->get()
+            ->reduce(function ($carry, $stat) {
+                foreach ($stat->getAttributes() as $key => $value) {
+
+                    // Skip specific keys
+                    if (in_array($key, ['player_id', 'minutes_played', 'seconds_played', 'plus_minus', 'performance_index_rating_sign', 'efficiency_sign', 'plus_minus_sign'])) {
+                        continue;
+                    }
+
+                    // Handle averaging for specific keys
+                    $keysToAverage = ['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'];
+                    if (in_array($key, $keysToAverage)) {
+                        if ($key === 'field_goal_percentage' && (!isset($stat['field_goals_attempted']) || $stat['field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'two_point_field_goal_percentage' && (!isset($stat['two_point_field_goals_attempted']) || $stat['two_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'three_point_field_goal_percentage' && (!isset($stat['three_point_field_goals_attempted']) || $stat['three_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'free_throw_percentage' && (!isset($stat['free_throws_attempted']) || $stat['free_throws_attempted'] == 0)) {
+                            continue;
+                        }
+
+                        if (!isset($carry[$key])) {
+                            $carry[$key] = ['sum' => 0, 'count' => 0];
+                        }
+                        $carry[$key]['sum'] += $value ?? 0;
+                        $carry[$key]['count'] += 1;
+                        continue;
+                    }
+
+                    if (is_numeric($value)) {
+                        $carry[$key] = ($carry[$key] ?? 0) + $value;
+                    }
+                }
+                return $carry;
+            }, []);
+
+            // Calculate averages for the keys that need averaging
+            foreach (['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'] as $key) {
+                if (isset($homeTeamStats[$key])) {
+                    $homeTeamStats[$key] = $homeTeamStats[$key]['count'] > 0
+                        ? $homeTeamStats[$key]['sum'] / $homeTeamStats[$key]['count']
+                        : null;
+                }
+            }
+
+        $game->home_team_game_stats()->updateOrCreate(
+            ['team_id' => $game->home_team_id],
+            array_merge($homeTeamStats, ['team_id' => $game->home_team_id, 'game_id' => $game->id])
+        );
+
+
+        // Recalculate and update GameStat for away team
+        $awayTeamStats = $game->stats()
+            ->whereHas('player.teams', function ($query) use ($game) {
+                $query->where('teams.id', $game->away_team_id);
+            })
+            ->get()
+            ->reduce(function ($carry, $stat) {
+                foreach ($stat->getAttributes() as $key => $value) {
+
+                    // Skip specific keys
+                    if (in_array($key, ['player_id', 'minutes_played', 'seconds_played', 'plus_minus', 'performance_index_rating_sign', 'efficiency_sign', 'plus_minus_sign'])) {
+                        continue;
+                    }
+
+                    // Handle averaging for specific keys
+                    $keysToAverage = ['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'];
+                    if (in_array($key, $keysToAverage)) {
+                        if ($key === 'field_goal_percentage' && (!isset($stat['field_goals_attempted']) || $stat['field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'two_point_field_goal_percentage' && (!isset($stat['two_point_field_goals_attempted']) || $stat['two_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'three_point_field_goal_percentage' && (!isset($stat['three_point_field_goals_attempted']) || $stat['three_point_field_goals_attempted'] == 0)) {
+                            continue;
+                        } elseif ($key === 'free_throw_percentage' && (!isset($stat['free_throws_attempted']) || $stat['free_throws_attempted'] == 0)) {
+                            continue;
+                        }
+
+                        if (!isset($carry[$key])) {
+                            $carry[$key] = ['sum' => 0, 'count' => 0];
+                        }
+                        $carry[$key]['sum'] += $value ?? 0;
+                        $carry[$key]['count'] += 1;
+                        continue;
+                    }
+
+                    if (is_numeric($value)) {
+                        $carry[$key] = ($carry[$key] ?? 0) + $value;
+                    }
+                }
+                return $carry;
+            }, []);
+
+            // Calculate averages for the keys that need averaging
+            foreach (['field_goal_percentage', 'two_point_field_goal_percentage', 'three_point_field_goal_percentage', 'free_throw_percentage'] as $key) {
+                if (isset($awayTeamStats[$key])) {
+                    $awayTeamStats[$key] = $awayTeamStats[$key]['count'] > 0
+                        ? $awayTeamStats[$key]['sum'] / $awayTeamStats[$key]['count']
+                        : null;
+                }
+            }
+
+
+            $game->away_team_game_stats()->updateOrCreate(
+                ['team_id' => $game->away_team_id],
+                array_merge($awayTeamStats, ['team_id' => $game->away_team_id, 'game_id' => $game->id])
+            );
 
         return redirect()->route('games.index')
             ->with('success', 'Game updated successfully.');

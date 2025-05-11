@@ -48,4 +48,14 @@ class Game extends Model
     {
         return $this->hasMany(Stat::class);
     }
+
+    public function home_team_game_stats()
+    {
+        return $this->hasMany(GameStat::class)->where('team_id', $this->home_team_id);
+    }
+
+    public function away_team_game_stats()
+    {
+        return $this->hasMany(GameStat::class)->where('team_id', $this->away_team_id);
+    }
 }

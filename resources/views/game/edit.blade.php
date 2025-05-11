@@ -1,4 +1,10 @@
 <script>
+    
+    document.addEventListener("wheel", function(event){
+        if(document.activeElement.type === "number"){
+            document.activeElement.blur();
+        }
+    });
 
 function toggleScoreInput(type) {
         const totalScoreInput = document.getElementById('totalScoreInput');
@@ -226,14 +232,6 @@ function addStatForPlayer(checkbox) {
 
 
                 <div>
-                    <x-input-label for="stats[${newStatIndex}][field_goal_percentage]" :value="__('Percentuale di tiro')" />
-                    <x-text-input id="stats[${newStatIndex}][field_goal_percentage]"
-                        name="stats[${newStatIndex}][field_goal_percentage]" type="number" min="0" step="0.01"
-                        class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
-                </div>
-
-
-                <div>
                     <x-input-label for="stats[${newStatIndex}][three_point_field_goals_made]"
                         :value="__('Tiri da 3 segnati')" />
                     <x-text-input id="stats[${newStatIndex}][three_point_field_goals_made]"
@@ -248,15 +246,6 @@ function addStatForPlayer(checkbox) {
                     <x-text-input id="stats[${newStatIndex}][three_point_field_goals_attempted]"
                         name="stats[${newStatIndex}][three_point_field_goals_attempted]" type="number" min="0"
                         class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
-                </div>
-
-
-                <div>
-                    <x-input-label for="stats[${newStatIndex}][three_point_field_goal_percentage]"
-                        :value="__('Percentuale tiro da 3')" />
-                    <x-text-input id="stats[${newStatIndex}][three_point_field_goal_percentage]"
-                        name="stats[${newStatIndex}][three_point_field_goal_percentage]" type="number" min="0"
-                        class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                 </div>
 
 
@@ -279,15 +268,6 @@ function addStatForPlayer(checkbox) {
 
 
                 <div>
-                    <x-input-label for="stats[${newStatIndex}][two_point_field_goal_percentage]"
-                        :value="__('Percentuale tiro da 2')" />
-                    <x-text-input id="stats[${newStatIndex}][two_point_field_goal_percentage]"
-                        name="stats[${newStatIndex}][two_point_field_goal_percentage]" type="number" min="0"
-                        class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
-                </div>
-
-
-                <div>
                     <x-input-label for="stats[${newStatIndex}][free_throws_made]" :value="__('Tiri liberi segnati')" />
                     <x-text-input id="stats[${newStatIndex}][free_throws_made]"
                         name="stats[${newStatIndex}][free_throws_made]" type="number" min="0"
@@ -300,14 +280,6 @@ function addStatForPlayer(checkbox) {
                     <x-text-input id="stats[${newStatIndex}][free_throws_attempted]"
                         name="stats[${newStatIndex}][free_throws_attempted]" type="number" min="0"
                         class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" />
-                </div>
-
-
-                <div>
-                    <x-input-label for="stats[${newStatIndex}][free_throw_percentage]" :value="__('Percentuale tiro libero')" />
-                    <x-text-input id="stats[${newStatIndex}][free_throw_percentage]"
-                        name="stats[${newStatIndex}][free_throw_percentage]" type="number" min="0"
-                        class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" />
                 </div>
 
 
@@ -406,6 +378,73 @@ function addStatForPlayer(checkbox) {
     }
 }
 
+
+
+    async function toggleHomeTeamRoster(e) {
+        const homeTeamDetails = document.getElementById('homeTeamDetails');
+        if (!this.value) {
+            homeTeamDetails.classList.add('hidden');
+            return
+        }
+
+        try {
+            const response = await fetch(`/teams/${this.value}/players`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch players');
+            }
+            const playersList = document.getElementById('homeTeamPlayersList');
+
+            const players = await response.json();
+            playersList.innerHTML = players
+                .map(player => `
+                    <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="player-checkbox" data-player-id="${player.id}" data-player-name="${player.name}" onchange="addStatForPlayer(this)">
+                            <span>${player.name}</span>
+                        </label>
+                    </div>
+                `)
+                .join('');
+
+            homeTeamDetails.classList.remove('hidden');
+        } catch (error) {
+            console.error(error);
+            playersList.innerHTML = '<li>Error loading players</li>';
+        }
+    }
+
+    async function toggleAwayTeamRoster(e) {
+        const awayTeamDetails = document.getElementById('awayTeamDetails');
+        if (!this.value) {
+            awayTeamDetails.classList.add('hidden');
+            return
+        }
+
+        try {
+            const response = await fetch(`/teams/${this.value}/players`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch players');
+            }
+            const playersList = document.getElementById('awayTeamPlayersList');
+
+            const players = await response.json();
+            playersList.innerHTML = players
+                .map(player => `
+                    <div>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="player-checkbox" data-player-id="${player.id}" data-player-name="${player.name}" onchange="addStatForPlayer(this)">
+                            <span>${player.name}</span>
+                        </label>
+                    </div>
+                `)
+                .join('');
+
+            awayTeamDetails.classList.remove('hidden');
+        } catch (error) {
+            console.error(error);
+            playersList.innerHTML = '<li>Error loading players</li>';
+        }
+    }
 
 </script>
 
@@ -665,14 +704,6 @@ function addStatForPlayer(checkbox) {
 
 
                                             <div>
-                                                <x-input-label for="stats[{{ $index }}][field_goal_percentage]" :value="__('Percentuale di tiro')" />
-                                                <x-text-input id="stats[{{ $index }}][field_goal_percentage]"
-                                                    name="stats[{{ $index }}][field_goal_percentage]" type="number" min="0" step="0.01"
-                                                    class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" value="{{ $stat->field_goal_percentage }}" />
-                                            </div>
-
-
-                                            <div>
                                                 <x-input-label for="stats[{{ $index }}][three_point_field_goals_made]"
                                                     :value="__('Tiri da 3 segnati')" />
                                                 <x-text-input id="stats[{{ $index }}][three_point_field_goals_made]"
@@ -687,15 +718,6 @@ function addStatForPlayer(checkbox) {
                                                 <x-text-input id="stats[{{ $index }}][three_point_field_goals_attempted]"
                                                     name="stats[{{ $index }}][three_point_field_goals_attempted]" type="number" min="0"
                                                     class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->three_point_field_goals_attempted }}" />
-                                            </div>
-
-
-                                            <div>
-                                                <x-input-label for="stats[{{ $index }}][three_point_field_goal_percentage]"
-                                                    :value="__('Percentuale tiro da 3')" />
-                                                <x-text-input id="stats[{{ $index }}][three_point_field_goal_percentage]"
-                                                    name="stats[{{ $index }}][three_point_field_goal_percentage]" type="number" min="0"
-                                                    class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" value="{{ $stat->three_point_field_goal_percentage }}" />
                                             </div>
 
 
@@ -718,15 +740,6 @@ function addStatForPlayer(checkbox) {
 
 
                                             <div>
-                                                <x-input-label for="stats[{{ $index }}][two_point_field_goal_percentage]"
-                                                    :value="__('Percentuale tiro da 2')" />
-                                                <x-text-input id="stats[{{ $index }}][two_point_field_goal_percentage]"
-                                                    name="stats[{{ $index }}][two_point_field_goal_percentage]" type="number" min="0"
-                                                    class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" value="{{ $stat->two_point_field_goal_percentage }}" />
-                                            </div>
-
-
-                                            <div>
                                                 <x-input-label for="stats[{{ $index }}][free_throws_made]" :value="__('Tiri liberi segnati')" />
                                                 <x-text-input id="stats[{{ $index }}][free_throws_made]"
                                                     name="stats[{{ $index }}][free_throws_made]" type="number" min="0"
@@ -739,14 +752,6 @@ function addStatForPlayer(checkbox) {
                                                 <x-text-input id="stats[{{ $index }}][free_throws_attempted]"
                                                     name="stats[{{ $index }}][free_throws_attempted]" type="number" min="0"
                                                     class="mt-1 block w-full" oninput="roundDecimal.call(this)" autocomplete="off" value="{{ $stat->free_throws_attempted }}" />
-                                            </div>
-
-
-                                            <div>
-                                                <x-input-label for="stats[{{ $index }}][free_throw_percentage]" :value="__('Percentuale tiro libero')" />
-                                                <x-text-input id="stats[{{ $index }}][free_throw_percentage]"
-                                                    name="stats[{{ $index }}][free_throw_percentage]" type="number" min="0"
-                                                    class="mt-1 block w-full" oninput="fixPercentage.call(this)" autocomplete="off" value="{{ $stat->free_throw_percentage }}" />
                                             </div>
 
 
