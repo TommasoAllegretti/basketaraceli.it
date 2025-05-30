@@ -13,7 +13,8 @@ class Team extends Model
     protected $fillable = [
         'name',
         'abbreviation',
-        'league_id'
+        'league_id',
+        'club_id'
     ];
 
 
@@ -25,5 +26,10 @@ class Team extends Model
     public function league()
     {
         return $this->belongsTo(League::class);
+    }
+
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
     }
 }
