@@ -45,7 +45,23 @@ class PlayerController extends Controller
     )]
     public function index()
     {
-        return response()->json(Player::with('teams')->get());
+        $user = auth()->user();
+        
+        if ($user->admin == 1) {
+            // Admin users can see all players
+            return response()->json(Player::with('teams')->get());
+        } else {
+            // Non-admin users can only see their associated player
+            if (!$user->player_id) {
+                return response()->json([
+                    'message' => 'No player associated with this user'
+                ], 403);
+            }
+            
+            return response()->json(
+                Player::with('teams')->where('id', $user->player_id)->get()
+            );
+        }
     }
 
     /**
@@ -86,6 +102,14 @@ class PlayerController extends Controller
     )]
     public function store(Request $request)
     {
+        $user = auth()->user();
+        
+        if ($user->admin != 1) {
+            return response()->json([
+                'message' => 'Unauthorized. Only administrators can create players.'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'nullable|string|max:20',
@@ -151,7 +175,15 @@ class PlayerController extends Controller
     )]
     public function show(Player $player)
     {
-        return response()->json($player->load('teams'));
+        $user = auth()->user();
+        
+        if ($user->admin == 1 || $user->player_id == $player->id) {
+            return response()->json($player->load('teams'));
+        }
+        
+        return response()->json([
+            'message' => 'Unauthorized. You can only view your own player information.'
+        ], 403);
     }
 
     /**
@@ -203,6 +235,14 @@ class PlayerController extends Controller
     )]
     public function update(Request $request, Player $player)
     {
+        $user = auth()->user();
+        
+        if ($user->admin != 1) {
+            return response()->json([
+                'message' => 'Unauthorized. Only administrators can update players.'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'nullable|string|max:20',
@@ -259,6 +299,14 @@ class PlayerController extends Controller
     )]
     public function destroy(Player $player)
     {
+        $user = auth()->user();
+        
+        if ($user->admin != 1) {
+            return response()->json([
+                'message' => 'Unauthorized. Only administrators can delete players.'
+            ], 403);
+        }
+
         $player->delete();
 
         return response()->json([
