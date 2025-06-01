@@ -151,6 +151,675 @@
                 ]
             }
         },
+        "/api/games": {
+            "get": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Get all games",
+                "description": "List all games",
+                "operationId": "e333e2e46e6c7bd4c254fe379b7389dd",
+                "responses": {
+                    "200": {
+                        "description": "List of games",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "home_team": {
+                                                "type": "object"
+                                            },
+                                            "away_team": {
+                                                "type": "object"
+                                            },
+                                            "home_team_total_score": {
+                                                "type": "integer"
+                                            },
+                                            "away_team_total_score": {
+                                                "type": "integer"
+                                            },
+                                            "stats": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Create a new game",
+                "description": "Create a new game",
+                "operationId": "496a1db2ab2b344c40cad9e98d332d9e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "date",
+                                    "home_team_id",
+                                    "away_team_id"
+                                ],
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "home_team_id": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_id": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_total_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_total_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_first_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_first_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_second_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_second_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_third_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_third_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_fourth_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_fourth_quarter_score": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Game created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "game": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/games/{id}": {
+            "get": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Get game details",
+                "description": "Get a specific game",
+                "operationId": "48fb06317bf9e8f10c22dd892ff7425e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Game details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "home_team": {
+                                            "type": "object"
+                                        },
+                                        "away_team": {
+                                            "type": "object"
+                                        },
+                                        "home_team_total_score": {
+                                            "type": "integer"
+                                        },
+                                        "away_team_total_score": {
+                                            "type": "integer"
+                                        },
+                                        "stats": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Update game details",
+                "description": "Update a game",
+                "operationId": "273f111abbd78231f5f9c48d4fca792c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "date",
+                                    "home_team_id",
+                                    "away_team_id"
+                                ],
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "home_team_id": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_id": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_total_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_total_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_first_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_first_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_second_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_second_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_third_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_third_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "home_team_fourth_quarter_score": {
+                                        "type": "integer"
+                                    },
+                                    "away_team_fourth_quarter_score": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Game updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "game": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Games"
+                ],
+                "summary": "Delete a game",
+                "description": "Delete a game",
+                "operationId": "c5bffb910bb1804bac14c04327dad425",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Game deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/game-stats": {
+            "get": {
+                "tags": [
+                    "Game Stats"
+                ],
+                "summary": "Get all game stats",
+                "description": "List all game stats",
+                "operationId": "f7e2f19475da271af39f5fccfae95e27",
+                "responses": {
+                    "200": {
+                        "description": "List of game stats",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "team_id": {
+                                                "type": "integer"
+                                            },
+                                            "game_id": {
+                                                "type": "integer"
+                                            },
+                                            "points": {
+                                                "type": "integer"
+                                            },
+                                            "field_goals_attempted": {
+                                                "type": "integer"
+                                            },
+                                            "field_goals_made": {
+                                                "type": "integer"
+                                            },
+                                            "field_goal_percentage": {
+                                                "type": "number"
+                                            },
+                                            "team": {
+                                                "type": "object"
+                                            },
+                                            "game": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Game Stats"
+                ],
+                "summary": "Create a new game stat",
+                "description": "Create a new game stat",
+                "operationId": "179cd8d238fee0f769b589d37b0c3cdf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "team_id",
+                                    "game_id"
+                                ],
+                                "properties": {
+                                    "team_id": {
+                                        "type": "integer"
+                                    },
+                                    "game_id": {
+                                        "type": "integer"
+                                    },
+                                    "points": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_made": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "offensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "defensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "total_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "assists": {
+                                        "type": "integer"
+                                    },
+                                    "turnovers": {
+                                        "type": "integer"
+                                    },
+                                    "steals": {
+                                        "type": "integer"
+                                    },
+                                    "blocks": {
+                                        "type": "integer"
+                                    },
+                                    "personal_fouls": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Game stat created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "game_stat": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/game-stats/{id}": {
+            "get": {
+                "tags": [
+                    "Game Stats"
+                ],
+                "summary": "Get game stat details",
+                "description": "Get a specific game stat",
+                "operationId": "ce22be9ac20bd7f21f88c62dff04f16f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Game stat details"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Game Stats"
+                ],
+                "summary": "Update game stat details",
+                "description": "Update a game stat",
+                "operationId": "1200d6d17b8e4fc3a26d45e845658523",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "team_id",
+                                    "game_id"
+                                ],
+                                "properties": {
+                                    "team_id": {
+                                        "type": "integer"
+                                    },
+                                    "game_id": {
+                                        "type": "integer"
+                                    },
+                                    "points": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_made": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "offensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "defensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "total_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "assists": {
+                                        "type": "integer"
+                                    },
+                                    "turnovers": {
+                                        "type": "integer"
+                                    },
+                                    "steals": {
+                                        "type": "integer"
+                                    },
+                                    "blocks": {
+                                        "type": "integer"
+                                    },
+                                    "personal_fouls": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Game stat updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Game Stats"
+                ],
+                "summary": "Delete a game stat",
+                "description": "Delete a game stat",
+                "operationId": "37bc3c039da3545e8e48145f1170d5b5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Game Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Game stat deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/leagues": {
             "get": {
                 "tags": [
@@ -843,6 +1512,336 @@
                 ]
             }
         },
+        "/api/stats": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get all stats",
+                "description": "List all stats",
+                "operationId": "0a506e816973783ad4c275ef4729b391",
+                "responses": {
+                    "200": {
+                        "description": "List of stats",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "player_id": {
+                                                "type": "integer"
+                                            },
+                                            "game_id": {
+                                                "type": "integer"
+                                            },
+                                            "points": {
+                                                "type": "integer"
+                                            },
+                                            "rebounds": {
+                                                "type": "integer"
+                                            },
+                                            "assists": {
+                                                "type": "integer"
+                                            },
+                                            "player": {
+                                                "type": "object"
+                                            },
+                                            "game": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Create a new stat",
+                "description": "Create a new stat",
+                "operationId": "0f7ee486549de7a5fe9ac24d7cfc0d5b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "player_id",
+                                    "game_id"
+                                ],
+                                "properties": {
+                                    "player_id": {
+                                        "type": "integer"
+                                    },
+                                    "game_id": {
+                                        "type": "integer"
+                                    },
+                                    "seconds_played": {
+                                        "type": "integer"
+                                    },
+                                    "points": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_made": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "offensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "defensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "total_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "assists": {
+                                        "type": "integer"
+                                    },
+                                    "turnovers": {
+                                        "type": "integer"
+                                    },
+                                    "steals": {
+                                        "type": "integer"
+                                    },
+                                    "blocks": {
+                                        "type": "integer"
+                                    },
+                                    "personal_fouls": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Stat created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "stat": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/stats/{id}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get stat details",
+                "description": "Get a specific stat",
+                "operationId": "9ad12eeeb82fa3017a2b5fdbbb6d24ea",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stat details"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Update stat details",
+                "description": "Update a stat",
+                "operationId": "8cbf13234c22a3b19cdc535ad6019a18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "player_id",
+                                    "game_id"
+                                ],
+                                "properties": {
+                                    "player_id": {
+                                        "type": "integer"
+                                    },
+                                    "game_id": {
+                                        "type": "integer"
+                                    },
+                                    "seconds_played": {
+                                        "type": "integer"
+                                    },
+                                    "points": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "three_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_made": {
+                                        "type": "integer"
+                                    },
+                                    "two_point_field_goals_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_made": {
+                                        "type": "integer"
+                                    },
+                                    "free_throws_attempted": {
+                                        "type": "integer"
+                                    },
+                                    "offensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "defensive_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "total_rebounds": {
+                                        "type": "integer"
+                                    },
+                                    "assists": {
+                                        "type": "integer"
+                                    },
+                                    "turnovers": {
+                                        "type": "integer"
+                                    },
+                                    "steals": {
+                                        "type": "integer"
+                                    },
+                                    "blocks": {
+                                        "type": "integer"
+                                    },
+                                    "personal_fouls": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Stat updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Delete a stat",
+                "description": "Delete a stat",
+                "operationId": "8351a35e4c7e45cd01e4c9580e6f54b3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Stat ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stat deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/teams": {
             "get": {
                 "tags": [
@@ -1153,12 +2152,24 @@
     },
     "tags": [
         {
+            "name": "Games",
+            "description": "API endpoints for managing games"
+        },
+        {
+            "name": "Game Stats",
+            "description": "API endpoints for managing team game stats"
+        },
+        {
             "name": "Leagues",
             "description": "API endpoints for managing leagues"
         },
         {
             "name": "Players",
             "description": "API endpoints for managing players"
+        },
+        {
+            "name": "Stats",
+            "description": "API endpoints for managing player stats"
         },
         {
             "name": "Teams",

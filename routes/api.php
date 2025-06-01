@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\LeagueController;
+use App\Http\Controllers\Api\GameController;
+use App\Http\Controllers\Api\StatController;
+use App\Http\Controllers\Api\GameStatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // League routes
     Route::apiResource('leagues', LeagueController::class);
+
+    // Game routes
+    Route::apiResource('games', GameController::class);
+
+    // Stat routes
+    Route::apiResource('stats', StatController::class);
+
+    // Game stat routes
+    Route::apiResource('game-stats', GameStatController::class);
 });
 
 // Route::post('/register', [AuthController::class, 'register']);
