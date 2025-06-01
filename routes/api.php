@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\LeagueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Team routes
     Route::apiResource('teams', TeamController::class);
+    
+    // League routes
+    Route::apiResource('leagues', LeagueController::class);
 });
 
 // Route::post('/register', [AuthController::class, 'register']);
