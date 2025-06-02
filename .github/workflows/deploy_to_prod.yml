@@ -11,38 +11,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
-      
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
-          
-      - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction
-        
-      - name: Generate application key
-        run: php artisan key:generate --force
-        
-      - name: Clear and cache config
-        run: |
-          php artisan config:clear
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-          
-      - name: Install NPM dependencies
+      - name: Install dependencies
         run: npm ci
-        
       - name: Build project
         run: npm run build
-        
       - name: Archive production artifact
         uses: actions/upload-artifact@main
         with:
           name: .
           path: .
-          
   deploy:
     name: Deploy 🚀
     needs: build
@@ -50,13 +27,11 @@ jobs:
     steps: 
       - name: Checkout repository
         uses: actions/checkout@main
-        
       - name: Download artifact
         uses: actions/download-artifact@main
         with:
           name: .
           path: .
-          
       - name: Sync files to hosting
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with: 
