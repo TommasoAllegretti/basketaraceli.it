@@ -68,7 +68,10 @@ return [
             'middleware' => [
                 'api' => [],
                 'asset' => [],
-                'docs' => [],
+                'docs' => [
+                    // Only allow access to documentation in non-production environments
+                    'App\Http\Middleware\PreventProductionAccess',
+                ],
                 'oauth2_callback' => [],
             ],
 
