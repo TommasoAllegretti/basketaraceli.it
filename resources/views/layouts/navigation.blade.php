@@ -15,27 +15,6 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    
-                    @if (Auth::user()->player)
-                    <x-nav-link :href="route('player.show')" :active="request()->routeIs('player.show')">
-                        {{ __('Il mio giocatore') }}
-                    </x-nav-link>
-                    @endif
-
-                    @if (Auth::user()->admin == 1)
-                    <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
-                        {{ __('Partite') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
-                        {{ __('Giocatori') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.index')">
-                        {{ __('Squadre') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('leagues.index')" :active="request()->routeIs('leagues.index')">
-                        {{ __('Categorie') }}
-                    </x-nav-link>
-                    @endif
                 </div>
             </div>
 
@@ -91,27 +70,6 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            
-            @if (Auth::user()->player)
-            <x-responsive-nav-link :href="route('player.show')" :active="request()->routeIs('player.show')">
-                {{ __('Il mio giocatore') }}
-            </x-responsive-nav-link>
-            @endif
-            
-            @if (Auth::user()->admin == 1)
-            <x-responsive-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
-                {{ __('Partite') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('players.index')" :active="request()->routeIs('players.index')">
-                {{ __('Giocatori') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.index')">
-                {{ __('Squadre') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('leagues.index')" :active="request()->routeIs('leagues.index')">
-                {{ __('Categorie') }}
-            </x-responsive-nav-link>
-            @endif
         </div>
 
         <!-- Responsive Settings Options -->
