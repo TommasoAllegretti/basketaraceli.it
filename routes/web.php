@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Public routes
 Route::get('/home', function () {
     return view('pages/home');
 });
@@ -38,10 +39,14 @@ Route::get('/contatti', function () {
     return view('pages/contatti');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// CRM routes - all authenticated routes under /crm prefix
+Route::prefix('crm')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/{any?}', function () {
+        return view('vue');
+    })->where('any', '.*');
+});
 
+// Profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

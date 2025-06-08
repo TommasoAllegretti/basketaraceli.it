@@ -29,6 +29,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Check for redirect URL
+        $redirect = $request->input('redirect');
+        if ($redirect && str_starts_with($redirect, '/crm')) {
+            return redirect()->intended($redirect);
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

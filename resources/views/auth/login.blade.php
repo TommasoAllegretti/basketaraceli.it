@@ -5,6 +5,9 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
+        <!-- Add hidden redirect input -->
+        <input type="hidden" name="redirect" value="{{ request()->query('redirect') }}">
+
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
