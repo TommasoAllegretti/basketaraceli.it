@@ -77,6 +77,7 @@ class AuthController extends Controller
             'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'redirect_url' => '/crm/dashboard'
         ]);
     }
 

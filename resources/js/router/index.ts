@@ -12,6 +12,10 @@ const router = createRouter({
             component: MainLayout,
             children: [
                 {
+                    path: '',  // Empty path will redirect to dashboard
+                    redirect: '/dashboard'
+                },
+                {
                     path: 'dashboard',
                     name: 'dashboard',
                     component: Dashboard
@@ -38,7 +42,8 @@ router.beforeEach((to, from, next) => {
     
     if (!isAuthenticated) {
         // Redirect to login with return URL
-        window.location.href = `/login?redirect=${encodeURIComponent(to.fullPath)}`
+        const loginPath = `/login?redirect=${encodeURIComponent(to.fullPath)}`
+        window.location.href = loginPath
         return
     }
     next()
