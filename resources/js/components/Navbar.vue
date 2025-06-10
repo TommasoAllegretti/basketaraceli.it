@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 // Import the logo
@@ -7,29 +7,6 @@ const logoUrl = new URL('/public/assets/logo_araceli.png', import.meta.url).href
 
 const route = useRoute()
 const isOpen = ref(false)
-const isDark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
-
-// Watch for system theme changes
-const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-const handleThemeChange = (e: MediaQueryListEvent | MediaQueryList) => {
-    isDark.value = e.matches
-    if (isDark.value) {
-        document.documentElement.classList.add('dark')
-    } else {
-        document.documentElement.classList.remove('dark')
-    }
-}
-
-// Initialize dark mode on mount and set up listeners
-onMounted(() => {
-    handleThemeChange(darkModeMediaQuery)
-    darkModeMediaQuery.addEventListener('change', handleThemeChange)
-})
-
-// Clean up listener on unmount
-onUnmounted(() => {
-    darkModeMediaQuery.removeEventListener('change', handleThemeChange)
-})
 
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
@@ -37,7 +14,7 @@ const toggleMenu = () => {
 </script>
 
 <template>
-    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+    <nav class="dark:bg-gray-800 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-24">
                 <div class="flex">
