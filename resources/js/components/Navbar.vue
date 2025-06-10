@@ -8,6 +8,23 @@ const logoUrl = new URL('/public/assets/logo_araceli.png', import.meta.url).href
 const route = useRoute()
 const isOpen = ref(false)
 
+const handleLogout = async () => {
+    try {
+        // Make a POST request to the logout endpoint
+        await fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        });
+        // Redirect to login page or home page after logout
+        window.location.href = '/login';
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+}
+
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
 }
@@ -54,6 +71,14 @@ const toggleMenu = () => {
                 </div>
 
                 <div class="flex items-center">
+                    <!-- Logout button (desktop) -->
+                    <button
+                        @click="handleLogout"
+                        class="hidden sm:inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mr-4"
+                    >
+                        Logout
+                    </button>
+
                     <!-- Mobile menu button -->
                     <button
                         @click="toggleMenu"
@@ -123,6 +148,13 @@ const toggleMenu = () => {
                 >
                     Contact
                 </RouterLink>
+                <!-- Logout button (mobile) -->
+                <button
+                    @click="handleLogout"
+                    class="block w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-900/50 hover:border-red-300 dark:hover:border-red-600"
+                >
+                    Logout
+                </button>
             </div>
         </div>
     </nav>
