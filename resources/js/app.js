@@ -4,10 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
-import { createApp } from 'vue';
-import router from './router';
-import pinia from './stores';
+import './bootstrap'
+import { createApp } from 'vue'
+import router from './router'
+import pinia from './stores'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -16,8 +16,8 @@ import pinia from './stores';
  */
 
 const app = createApp({
-    template: '<router-view></router-view>'
-});
+    template: '<router-view></router-view>',
+})
 
 /**
  * The following block of code may be used to automatically register your
@@ -32,8 +32,8 @@ const app = createApp({
 // });
 
 // Register plugins
-app.use(router);
-app.use(pinia);
+app.use(router)
+app.use(pinia)
 
 /**
  * Finally, we will attach the application instance to a HTML element with
@@ -41,4 +41,4 @@ app.use(pinia);
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app');
+app.mount('#app')

@@ -15,13 +15,13 @@ const handleLogout = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
             },
-        });
+        })
         // Redirect to login page or home page after logout
-        window.location.href = '/login';
+        window.location.href = '/login'
     } catch (error) {
-        console.error('Logout failed:', error);
+        console.error('Logout failed:', error)
     }
 }
 
@@ -37,11 +37,7 @@ const toggleMenu = () => {
                 <div class="flex">
                     <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
-                            <img 
-                                :src="logoUrl"
-                                alt="Basket Araceli Logo"
-                                class="h-12 w-auto object-contain"
-                            >
+                        <img :src="logoUrl" alt="Basket Araceli Logo" class="h-12 w-auto object-contain" />
                     </div>
 
                     <!-- Desktop Navigation Links -->
@@ -49,21 +45,30 @@ const toggleMenu = () => {
                         <RouterLink
                             to="/dashboard"
                             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
-                            :class="{ 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white': route.path === '/dashboard' }"
+                            :class="{
+                                'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
+                                    route.path === '/dashboard',
+                            }"
                         >
                             Dashboard
                         </RouterLink>
                         <RouterLink
                             to="/about"
                             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
-                            :class="{ 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white': route.path === '/about' }"
+                            :class="{
+                                'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
+                                    route.path === '/about',
+                            }"
                         >
                             About
                         </RouterLink>
                         <RouterLink
                             to="/contact"
                             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
-                            :class="{ 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white': route.path === '/contact' }"
+                            :class="{
+                                'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
+                                    route.path === '/contact',
+                            }"
                         >
                             Contact
                         </RouterLink>
@@ -86,7 +91,7 @@ const toggleMenu = () => {
                     >
                         <span class="sr-only">Open main menu</span>
                         <svg
-                            :class="{ 'hidden': isOpen, 'block': !isOpen }"
+                            :class="{ hidden: isOpen, block: !isOpen }"
                             class="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -100,7 +105,7 @@ const toggleMenu = () => {
                             />
                         </svg>
                         <svg
-                            :class="{ 'block': isOpen, 'hidden': !isOpen }"
+                            :class="{ block: isOpen, hidden: !isOpen }"
                             class="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -119,15 +124,15 @@ const toggleMenu = () => {
         </div>
 
         <!-- Mobile menu -->
-        <div
-            :class="{ 'block': isOpen, 'hidden': !isOpen }"
-            class="sm:hidden"
-        >
+        <div :class="{ block: isOpen, hidden: !isOpen }" class="sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
                 <RouterLink
                     to="/dashboard"
                     class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
-                    :class="{ 'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50': route.path === '/dashboard' }"
+                    :class="{
+                        'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
+                            route.path === '/dashboard',
+                    }"
                     @click="isOpen = false"
                 >
                     Dashboard
@@ -135,7 +140,10 @@ const toggleMenu = () => {
                 <RouterLink
                     to="/about"
                     class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
-                    :class="{ 'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50': route.path === '/about' }"
+                    :class="{
+                        'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
+                            route.path === '/about',
+                    }"
                     @click="isOpen = false"
                 >
                     About
@@ -143,7 +151,10 @@ const toggleMenu = () => {
                 <RouterLink
                     to="/contact"
                     class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
-                    :class="{ 'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50': route.path === '/contact' }"
+                    :class="{
+                        'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
+                            route.path === '/contact',
+                    }"
                     @click="isOpen = false"
                 >
                     Contact
@@ -162,7 +173,7 @@ const toggleMenu = () => {
 
 <style scoped>
 .router-link-active {
-    border-bottom: 2px solid #4F46E5;
-    color: #4F46E5;
+    border-bottom: 2px solid #4f46e5;
+    color: #4f46e5;
 }
-</style> 
+</style>
