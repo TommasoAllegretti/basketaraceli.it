@@ -44,7 +44,7 @@ const toggleMenu = () => {
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                         <RouterLink
                             to="/dashboard"
-                            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
+                            class="no-underline inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
                             :class="{
                                 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
                                     route.path === '/dashboard',
@@ -53,24 +53,24 @@ const toggleMenu = () => {
                             Dashboard
                         </RouterLink>
                         <RouterLink
-                            to="/about"
-                            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
+                            to="/partite"
+                            class="no-underline inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
                             :class="{
                                 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
                                     route.path === '/about',
                             }"
                         >
-                            About
+                            Partite
                         </RouterLink>
                         <RouterLink
                             to="/contact"
-                            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
+                            class="no-underline inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-700"
                             :class="{
                                 'border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white':
                                     route.path === '/contact',
                             }"
                         >
-                            Contact
+                            Giocatori
                         </RouterLink>
                     </div>
                 </div>
@@ -79,7 +79,7 @@ const toggleMenu = () => {
                     <!-- Logout button (desktop) -->
                     <button
                         @click="handleLogout"
-                        class="hidden sm:inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mr-4"
+                        class="hidden sm:inline-flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
                     >
                         Logout
                     </button>
@@ -128,7 +128,7 @@ const toggleMenu = () => {
             <div class="pt-2 pb-3 space-y-1">
                 <RouterLink
                     to="/dashboard"
-                    class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                    class="no-underline block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                     :class="{
                         'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
                             route.path === '/dashboard',
@@ -139,7 +139,7 @@ const toggleMenu = () => {
                 </RouterLink>
                 <RouterLink
                     to="/about"
-                    class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                    class="no-underline block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                     :class="{
                         'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
                             route.path === '/about',
@@ -150,7 +150,7 @@ const toggleMenu = () => {
                 </RouterLink>
                 <RouterLink
                     to="/contact"
-                    class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                    class="no-underline block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                     :class="{
                         'border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50':
                             route.path === '/contact',
@@ -162,7 +162,7 @@ const toggleMenu = () => {
                 <!-- Logout button (mobile) -->
                 <button
                     @click="handleLogout"
-                    class="block w-full text-left pl-3 pr-4 py-2 border-l-4 text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-900/50 hover:border-red-300 dark:hover:border-red-600"
+                    class="block w-full text-left pl-3 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                     Logout
                 </button>
@@ -175,5 +175,12 @@ const toggleMenu = () => {
 .router-link-active {
     border-bottom: 2px solid #4f46e5;
     color: #4f46e5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .router-link-active {
+        border-bottom: 2px solid #a5b4fc;
+        color: #a5b4fc; /* lighter indigo for dark mode */
+    }
 }
 </style>
